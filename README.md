@@ -934,80 +934,82 @@ Data can be sent as ISO-8859-1 or UTF-8. If using ISO-8859-1, XML encoding attri
 
 POST: /prinetti/create-shipment
  
-Element	Presence	Definition	Data type	Optional / Mandatory
-eChannel	1	Root element of the document		
-ROUTING	1			
-Routing.Account	1	User account	UUID	
-Routing.Key	1	Shared secret	String	
-Routing.Id	1	Unique id of the request	Numeric	
-Routing.Time	1	Timestamp of the request, in format YYYYMMDDHHMMSS	Timestamp	
-Shipment	1			
-Shipment.Sender	1	Information about the Sender		
-Sender.Name1	1	Name of the Sender	String	
-Sender.Name2	1	Additional name of the Sender	String	
-Sender.Addr1	1	Address of the Sender	String	
-Sender.Addr2	1	Additional address of the Sender	String	
-Sender.Addr3	1	Additional address of the Sender	String	
-Sender.Postcode	1	Postcode of the Sender	String	
-Sender.City	1	City of the Sender	String	
-Sender.Country	1	Country of the Sender	String	
-Sender.Vatcode	1	Vat code of the Sender	String	
-Shipment.Recipient	1			
-Recipient.Name1	1		String	
-Recipient.Name2	1		String	
-Recipient.Addr1	1		String	
-Recipient.Addr2	1			
-Recipient.Addr3	1			
-Recipient.Postcode	1		String	
-Recipient.City	1		String	
-Recipient.Country	1	2 letter country code	String	
-Recipient.Phone	1		String	
-Recipient.Email	1		String	
-Shipment.Consigment	1			
-Consigment.Reference	1		Numeric	
-Consigment.Product	1		String	
-Consignment.AdditionalService	0...N	Additional Services		
-AdditionalService.ServiceCode	1		String	
-AdditionalService.Specifier[@name]	0...N	Attribute name can have values depending on the service code	String	
-Consigment.Parcel	1...N			
-Parcel.Packagetype	1		String	
-Parcel.Weight	1		Decimal	
-Parcel.Volume	1		Decimal	
-Parcel.ReturnService	1	Creates return label if specified. "2108" for Posti, "80020" for DB Schenker.	Numeric	O
-Parcel.Contents	1		String	
-Parcel.contentline	0...N	Description of the content, required for non-EU shipments		O / M
-contentline.description	1	Description of the content	String	M
-contentline.quantity	1	Quantity of the content	Numeric	M
-contentline.currency	1	3 letter currency code, EUR	String	M
-contentline.netweight	1	Netwieght in grams	Numeric	M
-contentline.value	1	Value of the content in currency. Decimal point is "."	Decimal	M
-contentline.countryoforigin	1	2 letter country code, FI	String	M
-contentline.tariffcode	1	Customs tariff -code, required for non-EU shipments	Numeric	O / M
-Additional Services
-Service	Code	Attribute	Type	Description
-Cash on delivery
-(Postiennakko, Bussiennakko)	3101	amount	N	Amount in eurocents
-		account	IBAN	
-		codbic	BIC	
-		reference	AN	Finnish bank reference number with valid check digit
-Multipacket service	3102	count	N	
-Shipment contract	3103			Not in use
-Fragile	3104			
-Sähköinen saapumisilmoitus	3139			
-Henkilökohtaisesti luovutettava	3164			
-Säilytysajan pidennys	3165			
-Large shipment	3174			
-Pickup location	2106	pickup_point_id	N	Pickup point ID fetched from the "Fetch shipping label" -API
+|Element        |Presence       |Definition     |Data type      |Optional / Mandatory|
+|---------------|---------------|---------------|---------------|--------------------|
+|eChannel       |1      |Root element of the document   |       ||
+|ROUTING        |1      |       |       ||
+|Routing.Account        |1      |User account   |UUID   ||
+|Routing.Key    |1      |Shared secret  |String ||
+|Routing.Id     |1      |Unique id of the request       |Numeric        ||
+|Routing.Time   |1      |Timestamp of the request, in format YYYYMMDDHHMMSS     |Timestamp      ||
+|Shipment       |1      |       |       ||
+|Shipment.Sender        |1      |Information about the Sender   |       ||
+|Sender.Name1   |1      |Name of the Sender     |String ||
+|Sender.Name2   |1      |Additional name of the Sender  |String ||
+|Sender.Addr1   |1      |Address of the Sender  |String ||
+|Sender.Addr2   |1      |Additional address of the Sender       |String ||
+|Sender.Addr3   |1      |Additional address of the Sender       |String ||
+|Sender.Postcode        |1      |Postcode of the Sender |String ||
+|Sender.City    |1      |City of the Sender     |String ||
+|Sender.Country |1      |Country of the Sender  |String ||
+|Sender.Vatcode |1      |Vat code of the Sender |String ||
+|Shipment.Recipient     |1      |       |       ||
+|Recipient.Name1        |1      |       |String ||
+|Recipient.Name2        |1      |       |String ||
+|Recipient.Addr1        |1      |       |String ||
+|Recipient.Addr2        |1      |       |       ||
+|Recipient.Addr3        |1      |       |       ||
+|Recipient.Postcode     |1      |       |String ||
+|Recipient.City |1      |       |String ||
+|Recipient.Country      |1      |2 letter country code  |String ||
+|Recipient.Phone        |1      |       |String ||
+|Recipient.Email        |1      |       |String ||
+|Shipment.Consigment    |1      |       |       ||
+|Consigment.Reference   |1      |       |Numeric        ||
+|Consigment.Product     |1      |       |String ||
+|Consignment.AdditionalService  |0...N  |Additional Services    |       ||
+|AdditionalService.ServiceCode  |1      |       |String ||
+|AdditionalService.Specifier[@name]     |0...N  |Attribute name can have values depending on the service code   |String ||
+|Consigment.Parcel      |1...N  |       |       ||
+|Parcel.Packagetype     |1      |       |String ||
+|Parcel.Weight  |1      |       |Decimal        ||
+|Parcel.Volume  |1      |       |Decimal        ||
+|Parcel.ReturnService   |1      |Creates return label if specified. "2108" for Posti, "80020" for DB Schenker.  |Numeric        |O|
+|Parcel.Contents        |1      |       |String ||
+|Parcel.contentline     |0...N  |Description of the content, required for non-EU shipments      |       |O / M|
+|contentline.description        |1      |Description of the content     |String |M|
+|contentline.quantity   |1      |Quantity of the content        |Numeric        |M|
+|contentline.currency   |1      |3 letter currency code, EUR    |String |M|
+|contentline.netweight  |1      |Netwieght in grams     |Numeric        |M|
+|contentline.value      |1      |Value of the content in currency. Decimal point is "." |Decimal        |M|
+|contentline.countryoforigin    |1      |2 letter country code, FI      |String |M|
+|contentline.tariffcode |1      |Customs tariff -code, required for non-EU shipments    |Numeric        |O / M|
 
-LQ shipment
-	3143	lqcount	N	Limited quantity of dangerous goods
-		lqweight	N	Weight in kilograms
-Tracking callback URL	9901	url	URL	URL where Pakettikauppa posts data when new tracking event occurs. See details from "Callback service".
+### Additional Services
 
-Label code	9902			If defined, generates unique code for the label that can be used to send the shipment without printing the label. (Posti Easy Sending Code /Matkahuolto activation code) Using this feature can have performance impact.
+|Service	|Code	|Attribute	|Type	|Description|
+|---|---|---|---|---|
+|Cash on delivery (Postiennakko, Bussiennakko)|	3101	|amount	N	|Amount in eurocents|
+|||account|IBAN||
+|||codbic|BIC||	
+|||reference|AN|Finnish bank reference number with valid check digit|
+|Multipacket service	|3102	|count	|N	||
+|Shipment contract	|3103	|	|	|Not in use|
+|Fragile	|3104		|	|	||
+|Sähköinen saapumisilmoitus	|3139	|||		
+|Henkilökohtaisesti luovutettava	|3164|||			
+|Säilytysajan pidennys	|3165|||			
+|Large shipment	|3174|||			
+|Pickup location	|2106	|pickup_point_id	|N	|Pickup point ID fetched from the "Fetch shipping label" -API|
+|LQ shipment|3143	|lqcount	|N	|Limited quantity of dangerous goods|
+|||lqweight	|N	|Weight in kilograms|
+|Tracking callback URL	|9901	|url	|URL	|URL where Pakettikauppa posts data when new tracking event occurs. See details from "Callback service".|
+|Label code	|9902	|	|	|If defined, generates unique code for the label that can be used to send the shipment without printing the label. (Posti Easy Sending Code /Matkahuolto activation code) Using this feature can have performance impact.|
+
 ### Minimal XML example
+
 A single packet, no additional services.
-Minimal xml
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <eChannel>
@@ -1200,24 +1202,28 @@ $output = curl_exec($ch);
 ```
 
 ## Response
-Element	Presence	Definition	Data type	Mandatory	Parent
-Response	1			x	
-response.status	1	Status code	N	x	Response
-response.message	1	Status code in text	AN 1000	x	Response
-response.reference	0...1	Consignment.Reference	AN 100	o	Response
-@uuid	1	Unique ID for the shipment. Not in original Prinetti API specification.	UUID	o	response.reference
-response.trackingcode	0...n	Tracking code for each parcel in shipment	AN 32	o	Response
-@uuid	1	Unique ID for the parcel. Not in original Prinetti API specification.	UUID	o	response.trackingcode
-@labelcode	0....1	Unique code for the label. Not in original Prinetti API specification.	AN 20	o	response.trackingcode
-Response status codes
-Code	Definition
-0	OK
-100	Unkown error
-160	Error in saving label
-230	XML is invalid
-240	System failure
+|Element	|Presence	|Definition	|Data type	|Mandatory	|Parent|
+|---|---|---|---|---|---|
+|Response	|1	|	|	|x	||
+|response.status	|1	|Status code	|N	|x	|Response|
+|response.message	|1	|Status code in text	|AN 1000	|x	Response|
+|response.reference	|0...1	|Consignment.Reference	|AN 100	|o	|Response|
+|@uuid	|1	|Unique ID for the shipment. Not in original Prinetti API specification.	|UUID	|o	|response.reference|
+|response.trackingcode	|0...n	|Tracking code for each parcel in shipment	|AN 32	|o	|Response|
+|@uuid	|1	|Unique ID for the parcel. Not in original Prinetti API specification.	|UUID	|o	|response.trackingcode|
+|@labelcode	|0....1	|Unique code for the label. Not in original Prinetti API specification.	|AN 20	|o	|response.trackingcode|
 
-### Response 
+Response status codes
+|Code	|Definition|
+|---	|---	|
+|0	|OK|
+|100	|Unkown error|
+|160	|Error in saving label|
+|230	|XML is invalid|
+|240	|System failure|
+
+### Response
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <Response>
@@ -1319,7 +1325,7 @@ POST: /customer/create
 $post_params = [
 	'api_key'				    	=> '00000000-0000-0000-0000-000000000000'
 	'name'                    			=> 'Puu ja Mutterikauppa Oy',
-	'payment_service_provider'			=> 'CREDIT_CARD', // CREDIT_CARD or "" If empty the customer must login to https:://hallinta.pakettikauppa.fi and set payment method in profile page
+	'payment_service_provider'			=> 'CREDIT_CARD', // CREDIT_CARD or ""
 	'business_id'            			=> '1234567-8',
 	'marketing_name'        			=> 'Ikaalisten puut ja mutterit',
 	'street_address'        			=> 'Some street 123',
@@ -1361,17 +1367,17 @@ With the exception of business_id, customer information can be updated freely by
 
 ```php
 $post_params = [
-	'api_key'					=> '00000000-0000-0000-0000-000000000000',
-	'customer_id'				=> '5',	
-	'name'                    	=> 'Puu, Mutteri ja peltikauppa Oy',
-    'marketing_name'        	=> 'Ikaalisten puut, mutterit ja pellit',
-    'street_address'        	=> 'Some other street 123',
-    'post_office'            	=> 'Kilvakkala',
-    'postcode'                	=> '339530',
-    'phone'                    	=> '03 987654321',
-    'contact_person_name'    	=> 'Kalle',
-    'contact_person_phone'    	=> '050 987654321',
-    'contact_person_email'    	=> 'kalle@puujamutterikauppa.fi',
+	'api_key'		=> '00000000-0000-0000-0000-000000000000',
+	'customer_id'		=> '5',	
+	'name'                  => 'Puu, Mutteri ja peltikauppa Oy',
+	'marketing_name'        => 'Ikaalisten puut, mutterit ja pellit',
+	'street_address'        => 'Some other street 123',
+	'post_office'           => 'Kilvakkala',
+	'postcode'              => '339530',
+	'phone'                 => '03 987654321',
+	'contact_person_name'   => 'Kalle',
+	'contact_person_phone' 	=> '050 987654321',
+	'contact_person_email' 	=> 'kalle@puujamutterikauppa.fi',
 ];
 
 ksort($post_params);
@@ -1385,7 +1391,13 @@ Http code 200, 401 or 500
 
 ```json
 {
-	"success": true || false
+	"success": true
+}
+```
+
+```json
+{
+	"success": false
 }
 ```
 
@@ -1440,7 +1452,7 @@ Deactivates the customer, after deactivation the customer can no longer create n
 |api_key|UUID|x|
 |customer_id|INT|x|
 |timestamp|UNIX TIME|x|
-|hash	AN 64	x|
+|hash|AN 64|x|
 
 ### Deactivate 
 
@@ -1460,7 +1472,13 @@ $post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
 Http code 200, 401 or 500
 ```json
 {
-	"success": true || false
+	"success": true
+}
+```
+
+```json
+{
+	"success": false
 }
 ```
 
