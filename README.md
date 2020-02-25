@@ -607,7 +607,7 @@ POST: /pickup-points/search
 |timestamp      |UNIX TIME      |x      ||
 |hash   |AN 64  |x      ||
 
-Search pickup points 
+Example:
 ```php
 $post_params = [
     'api_key'       => $api_key,
@@ -621,6 +621,7 @@ ksort($post_params);
 $post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
 ```
 
+Example:
 ```php
 // you can also use the just query param 
 $post_params = [
@@ -695,7 +696,7 @@ In the original Prinetti API SmartPOST product code (2106) was used, along with 
 
 If you have implemented a pickup point search API directly with a packet service provider supported by Pakettikauppa.fi (Matkahuolto for example) you can use the point id fetched via your implementation. With the pickup point API Pakettikauppa.fi functions only as a technical wrapper to different parcel service provider between you and the service provider. 
 
-Additional Service example
+Additional Service example:
 ```xml
 <Consignment.AdditionalService>
     <AdditionalService.ServiceCode>2106</AdditionalService.ServiceCode>
@@ -718,7 +719,6 @@ POST: /pickup-point/info
 |hash	|AN 64	|x	||
 
 Example:
-
 ```php
 $url = 'https://apitest.pakettikauppa.fi/pickup-point/info';
 $secret = '1234567890ABCDEF';
@@ -844,6 +844,7 @@ POST: /shipment/cancel
 
 ### Cancel shipment 
 
+Example:
 ```php
 $post_params = [
     'api_key'       => $api_key,
@@ -861,14 +862,14 @@ $post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
 Example:
 ```json
 {
-	success: true
+	"success": true
 }
 ```
 
 Example:
 ```
 {
-	success: false
+	"success": false
 }
 ```
 
@@ -890,8 +891,7 @@ POST: callback url
 |object |JSON   |x      |JSON presentation of the event. Object is same which is returned from shipment/status API.|
 |hash   |AN 64  |x      ||
 
-Hash calculation example 
-
+Hash calculation example:
 ```php
 $post_params = [
     'api_key' => $api_key,
@@ -910,16 +910,14 @@ $post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
 
 Client have to respond with HTTP status code 200 and with a valid JSON -object. If the client system does not respond in 10 seconds or responds in some other than correct message and status server will try to send data again after 15 minutes. Server will try to send notification to client multiple times before it stops trying.
 
-JSON response example 
-
+JSON response example:
 ```json
 {
-	success: true
+	"success": true
 }
 ```
 
-Full HTTP response example response 
-
+Full HTTP response example response:
 ```
 HTTP/1.1 200 OK
 Date: Tue, 12 Sep 2017 10:54:56 GMT
@@ -931,7 +929,7 @@ Connection: close
 Content-Type: application/json
 
 {
-	success: true
+	"success": true
 }
 ```
 
@@ -1069,8 +1067,6 @@ A single packet, no additional services.
 
 Multipacket shipment via Matkahuolto, cash on delivery. Has multiple elements from the original Prinetti API that are not used with Pakettikauppa.fi implementation.
 
-Full XML 
-
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <eChannel>
@@ -1191,6 +1187,7 @@ Full XML
 
 Create shipment 
 
+Example:
 ```php
 $url = 'https://apitest.pakettikauppa.fi/prinetti/create-shipment';
 $secret = '1234567890ABCDEF';
@@ -1215,6 +1212,7 @@ $output = curl_exec($ch);
 ```
 
 ## Response
+
 |Element	|Presence	|Definition	|Data type	|Mandatory	|Parent|
 |---|---|---|---|---|---|
 |Response	|1	|	|	|x	||
@@ -1227,6 +1225,7 @@ $output = curl_exec($ch);
 |@labelcode	|0....1	|Unique code for the label. Not in original Prinetti API specification.	|AN 20	|o	|response.trackingcode|
 
 Response status codes
+
 |Code	|Definition|
 |---	|---	|
 |0	|OK|
@@ -1237,6 +1236,7 @@ Response status codes
 
 ### Response
 
+Example:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <Response>
@@ -1251,8 +1251,7 @@ Response status codes
 
 POST: /prinetti/get-shipping-label
 
-XML example
-
+XML example:
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <eChannel>
@@ -1334,6 +1333,8 @@ POST: /customer/create
 |hash|AN 64|x||
 
 ## Create customer 
+
+Example:
 ```php
 $post_params = [
 	'api_key'				    	=> '00000000-0000-0000-0000-000000000000'
@@ -1358,6 +1359,7 @@ $post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
 ```
 
 ### Response 
+
 Http code: 201, 401 or 500
 
 ```json
