@@ -124,28 +124,29 @@ All data sent should be UTF-8 unless mentioned otherwise.
 # Request Authentication
 With the exception of Prinetti API all request are signed with an sha256 hmac calculated by using the request parameters, sorted alphabetically by parameter key and separated by an &, as the message. Calculated HMAC is placed in the hash -parameter.
 
-Hmac Example 
-  <?php
+## Hmac Example
 
-  $secret = 'a1b2c3d4e5f6';
+```php
+$secret = 'a1b2c3d4e5f6';
 
-  $post_params = [
-      'name'  => 'Some name',
-      'date'  => '2016-02-01',
-      'char'  => 'C',
-  ];
+$post_params = [
+	'name'  => 'Some name',
+	'date'  => '2016-02-01',
+	'char'  => 'C',
+];
 
-  ksort($post_params);
-  
-  $post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+ksort($post_params);
+
+$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
 
 
-  $ch = curl_init($url);
-  curl_setopt($ch, CURLOPT_POST, 1);
-  curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_params));
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_params));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-  $output = curl_exec($ch);
+$output = curl_exec($ch);
+```
 
 # General APIs
 ## List available shipping methods
@@ -159,307 +160,310 @@ POST: /shipping-methods/list
 |language|AN2|FI, SE or EN. If not specified, FI is assumed.|
 |hash|AN64|x||
 
-List shipping methods 
-  <?php
+Example:
+```php
+$post_params = [
+	'api_key' 		=> '00000000-0000-0000-0000-000000000000',
+	'timestamp' 	=> time(),
+];
 
-  $post_params = [
-    'api_key' 		=> '00000000-0000-0000-0000-000000000000',
-    'timestamp' 	=> time(),
-  ];
+$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+```
 
-  $post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
-  
 ### Response
 Maximum dimensions for icon are 120px width and 55px height.
-Response 
-	[{
-		"name": "Bussipaketti",
-		"shipping_method_code": 90010,
-		"description": null,
-		"service_provider": "Matkahuolto",
-		"supported_countries": ["FI", "AX"],
-		"has_pickup_points": false,
-		"home_delivery": false,
-		"additional_services": [{
-			"name": "Postiennakko",
-			"service_code": "3101",
-			"specifiers": [{
-				"name": "amount",
-				"type": "number",
-				"step": "0.01",
-				"min": "0"
-			}, {
-				"name": "account",
-				"type": "text"
-			}, {
-				"name": "reference",
-				"type": "text"
-			}, {
-				"name": "codbic",
-				"type": "text"
-			}]
+
+Example:
+```json
+[{
+	"name": "Bussipaketti",
+	"shipping_method_code": 90010,
+	"description": null,
+	"service_provider": "Matkahuolto",
+	"supported_countries": ["FI", "AX"],
+	"has_pickup_points": false,
+	"home_delivery": false,
+	"additional_services": [{
+		"name": "Postiennakko",
+		"service_code": "3101",
+		"specifiers": [{
+			"name": "amount",
+			"type": "number",
+			"step": "0.01",
+			"min": "0"
 		}, {
-			"name": "S\u00e4rkyv\u00e4",
-			"service_code": "3104",
-			"specifiers": null
-		}],
-		"icon": "https:\/\/static.pakettikauppa.fi\/logos\/matkahuolto\/logo.jpg"
-	}, {
-		"name": "EMS",
-		"shipping_method_code": 2017,
-		"description": null,
-		"service_provider": "Posti",
-		"supported_countries": [],
-		"has_pickup_points": false,
-		"home_delivery": false,
-		"additional_services": [],
-		"icon": "https:\/\/static.pakettikauppa.fi\/logos\/posti\/1.1_Posti_logo_Posti_Orange_rgb.png"
-	}, {
-		"name": "Euro Business",
-		"shipping_method_code": 70010,
-		"description": null,
-		"service_provider": "GLS",
-		"supported_countries": ["EE", "HU", "CZ", "DK", "CH", "SI", "SK", "RS", "DE", "SE", "RO", "FR", "PL", "PT", "NO", "MT", "LU", "LT", "LV", "HR", "GR", "AT", "IT", "GB", "IE", "NL", "ES", "BG", "BE", "CY"],
-		"has_pickup_points": false,
-		"home_delivery": false,
-		"additional_services": []
-	}, {
-		"name": "Euro Business Pallet",
-		"shipping_method_code": 70030,
-		"description": null,
-		"service_provider": "GLS",
-		"supported_countries": [],
-		"has_pickup_points": false,
-		"home_delivery": false,
-		"additional_services": []
-	}, {
-		"name": "Express",
-		"shipping_method_code": 70050,
-		"description": null,
-		"service_provider": "GLS",
-		"supported_countries": [],
-		"has_pickup_points": false,
-		"home_delivery": false,
-		"additional_services": []
-	}, {
-		"name": "Express-paketti",
-		"shipping_method_code": 2102,
-		"description": null,
-		"service_provider": "Posti",
-		"supported_countries": ["FI", "AX"],
-		"has_pickup_points": false,
-		"home_delivery": true,
-		"additional_services": [],
-		"icon": "https:\/\/static.pakettikauppa.fi\/logos\/posti\/1.1_Posti_logo_Posti_Orange_rgb.png"
-	}, {
-		"name": "Global Economy",
-		"shipping_method_code": 70070,
-		"description": null,
-		"service_provider": "GLS",
-		"supported_countries": [],
-		"has_pickup_points": false,
-		"home_delivery": false,
-		"additional_services": []
-	}, {
-		"name": "Jakopaketti",
-		"shipping_method_code": 90030,
-		"description": null,
-		"service_provider": "Matkahuolto",
-		"supported_countries": ["FI", "AX"],
-		"has_pickup_points": false,
-		"home_delivery": true,
-		"additional_services": [{
-			"name": "Postiennakko",
-			"service_code": "3101",
-			"specifiers": [{
-				"name": "amount",
-				"type": "number",
-				"step": "0.01",
-				"min": "0"
-			}, {
-				"name": "account",
-				"type": "text"
-			}, {
-				"name": "reference",
-				"type": "text"
-			}, {
-				"name": "codbic",
-				"type": "text"
-			}]
+			"name": "account",
+			"type": "text"
 		}, {
-			"name": "S\u00e4rkyv\u00e4",
-			"service_code": "3104",
-			"specifiers": null
-		}],
-		"icon": "https:\/\/static.pakettikauppa.fi\/logos\/matkahuolto\/logo.jpg"
+			"name": "reference",
+			"type": "text"
+		}, {
+			"name": "codbic",
+			"type": "text"
+		}]
 	}, {
-		"name": "Kotipaketti",
-		"shipping_method_code": 2104,
-		"description": null,
-		"service_provider": "Posti",
-		"supported_countries": ["FI", "AX"],
-		"has_pickup_points": false,
-		"home_delivery": true,
-		"additional_services": [{
-			"name": "LQ L\u00e4hetys",
-			"service_code": "3143",
-			"specifiers": null
+		"name": "S\u00e4rkyv\u00e4",
+		"service_code": "3104",
+		"specifiers": null
+	}],
+	"icon": "https:\/\/static.pakettikauppa.fi\/logos\/matkahuolto\/logo.jpg"
+}, {
+	"name": "EMS",
+	"shipping_method_code": 2017,
+	"description": null,
+	"service_provider": "Posti",
+	"supported_countries": [],
+	"has_pickup_points": false,
+	"home_delivery": false,
+	"additional_services": [],
+	"icon": "https:\/\/static.pakettikauppa.fi\/logos\/posti\/1.1_Posti_logo_Posti_Orange_rgb.png"
+}, {
+	"name": "Euro Business",
+	"shipping_method_code": 70010,
+	"description": null,
+	"service_provider": "GLS",
+	"supported_countries": ["EE", "HU", "CZ", "DK", "CH", "SI", "SK", "RS", "DE", "SE", "RO", "FR", "PL", "PT", "NO", "MT", "LU", "LT", "LV", "HR", "GR", "AT", "IT", "GB", "IE", "NL", "ES", "BG", "BE", "CY"],
+	"has_pickup_points": false,
+	"home_delivery": false,
+	"additional_services": []
+}, {
+	"name": "Euro Business Pallet",
+	"shipping_method_code": 70030,
+	"description": null,
+	"service_provider": "GLS",
+	"supported_countries": [],
+	"has_pickup_points": false,
+	"home_delivery": false,
+	"additional_services": []
+}, {
+	"name": "Express",
+	"shipping_method_code": 70050,
+	"description": null,
+	"service_provider": "GLS",
+	"supported_countries": [],
+	"has_pickup_points": false,
+	"home_delivery": false,
+	"additional_services": []
+}, {
+	"name": "Express-paketti",
+	"shipping_method_code": 2102,
+	"description": null,
+	"service_provider": "Posti",
+	"supported_countries": ["FI", "AX"],
+	"has_pickup_points": false,
+	"home_delivery": true,
+	"additional_services": [],
+	"icon": "https:\/\/static.pakettikauppa.fi\/logos\/posti\/1.1_Posti_logo_Posti_Orange_rgb.png"
+}, {
+	"name": "Global Economy",
+	"shipping_method_code": 70070,
+	"description": null,
+	"service_provider": "GLS",
+	"supported_countries": [],
+	"has_pickup_points": false,
+	"home_delivery": false,
+	"additional_services": []
+}, {
+	"name": "Jakopaketti",
+	"shipping_method_code": 90030,
+	"description": null,
+	"service_provider": "Matkahuolto",
+	"supported_countries": ["FI", "AX"],
+	"has_pickup_points": false,
+	"home_delivery": true,
+	"additional_services": [{
+		"name": "Postiennakko",
+		"service_code": "3101",
+		"specifiers": [{
+			"name": "amount",
+			"type": "number",
+			"step": "0.01",
+			"min": "0"
 		}, {
-			"name": "Postiennakko",
-			"service_code": "3101",
-			"specifiers": [{
-				"name": "amount",
-				"type": "number",
-				"step": "0.01",
-				"min": "0"
-			}, {
-				"name": "account",
-				"type": "text"
-			}, {
-				"name": "reference",
-				"type": "text"
-			}, {
-				"name": "codbic",
-				"type": "text"
-			}]
+			"name": "account",
+			"type": "text"
 		}, {
-			"name": "S\u00e4rkyv\u00e4",
-			"service_code": "3104",
-			"specifiers": null
+			"name": "reference",
+			"type": "text"
 		}, {
-			"name": "Suuri",
-			"service_code": "3174",
-			"specifiers": null
-		}],
-		"icon": "https:\/\/static.pakettikauppa.fi\/logos\/posti\/1.1_Posti_logo_Posti_Orange_rgb.png"
+			"name": "codbic",
+			"type": "text"
+		}]
 	}, {
-		"name": "L\u00e4hi-\/Verkkopaketti",
-		"shipping_method_code": 90080,
-		"description": null,
-		"service_provider": "Matkahuolto",
-		"supported_countries": ["FI", "AX"],
-		"has_pickup_points": true,
-		"home_delivery": false,
-		"additional_services": [{
-			"name": "Noutopiste",
-			"service_code": "2106",
-			"specifiers": [{
-				"name": "pickup_point_id",
-				"type": "number"
-			}]
-		}],
-		"icon": "https:\/\/static.pakettikauppa.fi\/logos\/matkahuolto\/logo.jpg"
+		"name": "S\u00e4rkyv\u00e4",
+		"service_code": "3104",
+		"specifiers": null
+	}],
+	"icon": "https:\/\/static.pakettikauppa.fi\/logos\/matkahuolto\/logo.jpg"
+}, {
+	"name": "Kotipaketti",
+	"shipping_method_code": 2104,
+	"description": null,
+	"service_provider": "Posti",
+	"supported_countries": ["FI", "AX"],
+	"has_pickup_points": false,
+	"home_delivery": true,
+	"additional_services": [{
+		"name": "LQ L\u00e4hetys",
+		"service_code": "3143",
+		"specifiers": null
 	}, {
-		"name": "Noutopistepaketti",
-		"shipping_method_code": 80010,
-		"description": null,
-		"service_provider": "DB Schenker",
-		"supported_countries": ["FI", "AX"],
-		"has_pickup_points": true,
-		"home_delivery": false,
-		"additional_services": [{
-			"name": "Noutopiste",
-			"service_code": "2106",
-			"specifiers": [{
-				"name": "pickup_point_id",
-				"type": "number"
-			}]
-		}],
-		"icon": "https:\/\/static.pakettikauppa.fi\/logos\/dbschenker\/DB_Schenker_Noutopiste_-logo.png"
+		"name": "Postiennakko",
+		"service_code": "3101",
+		"specifiers": [{
+			"name": "amount",
+			"type": "number",
+			"step": "0.01",
+			"min": "0"
+		}, {
+			"name": "account",
+			"type": "text"
+		}, {
+			"name": "reference",
+			"type": "text"
+		}, {
+			"name": "codbic",
+			"type": "text"
+		}]
 	}, {
-		"name": "Palautus",
-		"shipping_method_code": 2108,
-		"description": "",
-		"service_provider": "Posti",
-		"supported_countries": ["FI", "AX"],
-		"has_pickup_points": false,
-		"home_delivery": false,
-		"additional_services": [{
-			"name": "LQ L\u00e4hetys",
-			"service_code": "3143",
-			"specifiers": null
-		}],
-		"icon": "https:\/\/static.pakettikauppa.fi\/logos\/posti\/1.1_Posti_logo_Posti_Orange_rgb.png"
+		"name": "S\u00e4rkyv\u00e4",
+		"service_code": "3104",
+		"specifiers": null
 	}, {
-		"name": "Pikkupaketti",
-		"shipping_method_code": 2461,
-		"description": null,
-		"service_provider": "Posti",
-		"supported_countries": ["FI", "AX"],
-		"has_pickup_points": false,
-		"home_delivery": true,
-		"additional_services": [],
-		"icon": "https:\/\/static.pakettikauppa.fi\/logos\/posti\/1.1_Posti_logo_Posti_Orange_rgb.png"
+		"name": "Suuri",
+		"service_code": "3174",
+		"specifiers": null
+	}],
+	"icon": "https:\/\/static.pakettikauppa.fi\/logos\/posti\/1.1_Posti_logo_Posti_Orange_rgb.png"
+}, {
+	"name": "L\u00e4hi-\/Verkkopaketti",
+	"shipping_method_code": 90080,
+	"description": null,
+	"service_provider": "Matkahuolto",
+	"supported_countries": ["FI", "AX"],
+	"has_pickup_points": true,
+	"home_delivery": false,
+	"additional_services": [{
+		"name": "Noutopiste",
+		"service_code": "2106",
+		"specifiers": [{
+			"name": "pickup_point_id",
+			"type": "number"
+		}]
+	}],
+	"icon": "https:\/\/static.pakettikauppa.fi\/logos\/matkahuolto\/logo.jpg"
+}, {
+	"name": "Noutopistepaketti",
+	"shipping_method_code": 80010,
+	"description": null,
+	"service_provider": "DB Schenker",
+	"supported_countries": ["FI", "AX"],
+	"has_pickup_points": true,
+	"home_delivery": false,
+	"additional_services": [{
+		"name": "Noutopiste",
+		"service_code": "2106",
+		"specifiers": [{
+			"name": "pickup_point_id",
+			"type": "number"
+		}]
+	}],
+	"icon": "https:\/\/static.pakettikauppa.fi\/logos\/dbschenker\/DB_Schenker_Noutopiste_-logo.png"
+}, {
+	"name": "Palautus",
+	"shipping_method_code": 2108,
+	"description": "",
+	"service_provider": "Posti",
+	"supported_countries": ["FI", "AX"],
+	"has_pickup_points": false,
+	"home_delivery": false,
+	"additional_services": [{
+		"name": "LQ L\u00e4hetys",
+		"service_code": "3143",
+		"specifiers": null
+	}],
+	"icon": "https:\/\/static.pakettikauppa.fi\/logos\/posti\/1.1_Posti_logo_Posti_Orange_rgb.png"
+}, {
+	"name": "Pikkupaketti",
+	"shipping_method_code": 2461,
+	"description": null,
+	"service_provider": "Posti",
+	"supported_countries": ["FI", "AX"],
+	"has_pickup_points": false,
+	"home_delivery": true,
+	"additional_services": [],
+	"icon": "https:\/\/static.pakettikauppa.fi\/logos\/posti\/1.1_Posti_logo_Posti_Orange_rgb.png"
+}, {
+	"name": "Postipaketti",
+	"shipping_method_code": 2103,
+	"description": null,
+	"service_provider": "Posti",
+	"supported_countries": ["FI", "AX"],
+	"has_pickup_points": true,
+	"home_delivery": false,
+	"additional_services": [{
+		"name": "Henkil\u00f6kohtaisesti luovutettava",
+		"service_code": "3163",
+		"specifiers": null
 	}, {
-		"name": "Postipaketti",
-		"shipping_method_code": 2103,
-		"description": null,
-		"service_provider": "Posti",
-		"supported_countries": ["FI", "AX"],
-		"has_pickup_points": true,
-		"home_delivery": false,
-		"additional_services": [{
-			"name": "Henkil\u00f6kohtaisesti luovutettava",
-			"service_code": "3163",
-			"specifiers": null
-		}, {
-			"name": "LQ L\u00e4hetys",
-			"service_code": "3143",
-			"specifiers": null
-		}, {
-			"name": "Noutopiste",
-			"service_code": "2106",
-			"specifiers": [{
-				"name": "pickup_point_id",
-				"type": "number"
-			}]
-		}, {
-			"name": "Postiennakko",
-			"service_code": "3101",
-			"specifiers": [{
-				"name": "amount",
-				"type": "number",
-				"step": "0.01",
-				"min": "0"
-			}, {
-				"name": "account",
-				"type": "text"
-			}, {
-				"name": "reference",
-				"type": "text"
-			}, {
-				"name": "codbic",
-				"type": "text"
-			}]
-		}, {
-			"name": "S\u00e4hk\u00f6inen saapumisilmoitus",
-			"service_code": "3139",
-			"specifiers": null
-		}, {
-			"name": "S\u00e4ilytysajan pidennys",
-			"service_code": "3165",
-			"specifiers": null
-		}, {
-			"name": "S\u00e4rkyv\u00e4",
-			"service_code": "3104",
-			"specifiers": null
-		}, {
-			"name": "Suuri",
-			"service_code": "3174",
-			"specifiers": null
-		}],
-		"icon": "https:\/\/static.pakettikauppa.fi\/logos\/posti\/1.1_Posti_logo_Posti_Orange_rgb.png"
+		"name": "LQ L\u00e4hetys",
+		"service_code": "3143",
+		"specifiers": null
 	}, {
-		"name": "Priority",
-		"shipping_method_code": 2015,
-		"description": null,
-		"service_provider": "Posti",
-		"supported_countries": [],
-		"has_pickup_points": false,
-		"home_delivery": false,
-		"additional_services": [],
-		"icon": "https:\/\/static.pakettikauppa.fi\/logos\/posti\/1.1_Posti_logo_Posti_Orange_rgb.png"
-	}]
+		"name": "Noutopiste",
+		"service_code": "2106",
+		"specifiers": [{
+			"name": "pickup_point_id",
+			"type": "number"
+		}]
+	}, {
+		"name": "Postiennakko",
+		"service_code": "3101",
+		"specifiers": [{
+			"name": "amount",
+			"type": "number",
+			"step": "0.01",
+			"min": "0"
+		}, {
+			"name": "account",
+			"type": "text"
+		}, {
+			"name": "reference",
+			"type": "text"
+		}, {
+			"name": "codbic",
+			"type": "text"
+		}]
+	}, {
+		"name": "S\u00e4hk\u00f6inen saapumisilmoitus",
+		"service_code": "3139",
+		"specifiers": null
+	}, {
+		"name": "S\u00e4ilytysajan pidennys",
+		"service_code": "3165",
+		"specifiers": null
+	}, {
+		"name": "S\u00e4rkyv\u00e4",
+		"service_code": "3104",
+		"specifiers": null
+	}, {
+		"name": "Suuri",
+		"service_code": "3174",
+		"specifiers": null
+	}],
+	"icon": "https:\/\/static.pakettikauppa.fi\/logos\/posti\/1.1_Posti_logo_Posti_Orange_rgb.png"
+}, {
+	"name": "Priority",
+	"shipping_method_code": 2015,
+	"description": null,
+	"service_provider": "Posti",
+	"supported_countries": [],
+	"has_pickup_points": false,
+	"home_delivery": false,
+	"additional_services": [],
+	"icon": "https:\/\/static.pakettikauppa.fi\/logos\/posti\/1.1_Posti_logo_Posti_Orange_rgb.png"
+}]
+```
 
 Get information about shipping method
 
