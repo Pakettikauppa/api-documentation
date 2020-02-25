@@ -1,9 +1,8 @@
-# api-documentation
-API documentation
+# Pakettikauppa API Documentation
 
-Pakettikauppa API Documentation
 Implementation documentation for the Pakettikauppa logistics service
-Changelog
+
+# Changelog
 |Date|Description|
 |---|---|
 |18.1.2017|Additional service descriptions added to documentation and layout changes|
@@ -24,63 +23,70 @@ Changelog
 |3.5.2019|Added information how to add return shipment for DB Schenker while creating origin shipment.|
 |12.11.2019|Removed note about how to search pickup points using provider names.|
 
-Table of contents
-•	1 Changelog
-•	2 Table of contents
-•	3 Generic
-•	4 Abbreviations and terms used in the service description
-•	5 Environments 
-o	5.1 Testing
-o	5.2 Production
-•	6 Request Authentication
-•	7 General APIs 
-o	7.1 List available shipping methods 
-	7.1.1 Request
-	7.1.2 Response
-o	7.2 Get information about shipping method 
-	7.2.1 Request
-	7.2.2 Response
-o	7.3 List avaible additional services [OBSOLETE] 
-	7.3.1 Obsolete information
-	7.3.2 Request
-	7.3.3 Response
-o	7.4 Search pickup points 
-	7.4.1 Request
-	7.4.2 Response
-o	7.5 Defining a pickup point in Prinetti API
-o	7.6 Get info about a single pickup point  
-	7.6.1 Request
-	7.6.2 Response
-o	7.7 Get Shipment status 
-	7.7.1 Request
-	7.7.2 Response
-	7.7.3 Shipment status codes
-o	7.8 Cancel shipment 
-	7.8.1 Request
-	7.8.2 Response
-o	7.9 Callback 
-	7.9.1 Server request
-	7.9.2 Client response
-•	8 Prinetti API 
-o	8.1 Create Shipment 
-	8.1.1 Additional Services
-	8.1.2 Minimal XML example
-	8.1.3 Full example with additional services
-	8.1.4 Request
-	8.1.5 Response
-o	8.2 Fetch Shipping Label 
-	8.2.1 XML example
-	8.2.2 Request
-	8.2.3 Response
-•	9 Reseller API 
-o	9.1 Create Customer
-o	9.2 Update Customer
-o	9.3 List Customers
-o	9.4 Deactivate Customer 
-	9.4.1 If your new customer already has a contract with us, reseller information can be changed with this API.
-	9.4.2 Response
-•	10 Information and support
+# Table of contents
 
+- [Pakettikauppa API Documentation](#pakettikauppa-api-documentation)
+- [Changelog](#changelog)
+- [Table of contents](#table-of-contents)
+- [Generic](#generic)
+- [Abbreviations and terms used in the service description](#abbreviations-and-terms-used-in-the-service-description)
+- [Environments](#environments)
+  * [Testing](#testing)
+  * [Production](#production)
+- [Request Authentication](#request-authentication)
+  * [Hmac Example](#hmac-example)
+- [General APIs](#general-apis)
+  * [List available shipping methods](#list-available-shipping-methods)
+    + [Request](#request)
+    + [Response](#response)
+  * [Get information about shipping method](#get-information-about-shipping-method)
+    + [Request](#request-1)
+    + [Response](#response-1)
+  * [List avaible additional services [OBSOLETE]](#list-avaible-additional-services--obsolete-)
+    + [Request](#request-2)
+    + [Response](#response-2)
+  * [Search pickup points](#search-pickup-points)
+    + [Request](#request-3)
+    + [Response](#response-3)
+    + [Defining a pickup point in Prinetti API](#defining-a-pickup-point-in-prinetti-api)
+  * [Get info about a single pickup point](#get-info-about-a-single-pickup-point)
+    + [Request](#request-4)
+    + [Response](#response-4)
+  * [Get Shipment status](#get-shipment-status)
+    + [Request](#request-5)
+    + [Response](#response-5)
+    + [Shipment status codes](#shipment-status-codes)
+  * [Cancel shipment](#cancel-shipment)
+    + [Request](#request-6)
+    + [Cancel shipment](#cancel-shipment-1)
+    + [Response](#response-6)
+  * [Callback](#callback)
+    + [Server request](#server-request)
+    + [Client response](#client-response)
+- [Prinetti API](#prinetti-api)
+  * [Create Shipment](#create-shipment)
+    + [Minimal XML example](#minimal-xml-example)
+    + [Full example with additional services](#full-example-with-additional-services)
+    + [Request](#request-7)
+  * [Response](#response-7)
+    + [Response](#response-8)
+  * [Fetch Shipping Label](#fetch-shipping-label)
+    + [Request](#request-8)
+    + [Response](#response-9)
+- [Reseller API](#reseller-api)
+  * [Create Customer](#create-customer)
+  * [Create customer](#create-customer)
+    + [Response](#response-10)
+  * [Update Customer](#update-customer)
+    + [Update](#update)
+    + [Response](#response-11)
+  * [List Customers](#list-customers)
+    + [Response](#response-12)
+  * [Deactivate Customer](#deactivate-customer)
+    + [Deactivate](#deactivate)
+    + [Response](#response-13)
+    + [Response](#response-14)
+- [Information and support](#information-and-support)
 
 # Generic
 This document describes APIs available to Pakettikauppas resellers and customers.
@@ -465,7 +471,7 @@ Example:
 }]
 ```
 
-Get information about shipping method
+## Get information about shipping method
 
 ### Request
 Get informationa bout a shipping method. This information is the same as in list-shipping-methods but returns information about the selected one.
@@ -479,19 +485,23 @@ POST: /shipping-methods/get
 |language|	AN 2|		FI, SE or EN. If not specified, FI is assumed.|
 |hash|	AN 64|	x||
 
-Get shipping methods 
-	<?php
+Example:
+```php
 
-	$post_params = [
-		'api_key' 		=> '00000000-0000-0000-0000-000000000000',
-		'shipping_method_code'	=> 90010,
-		'timestamp' 	=> time(),
-	];
+$post_params = [
+	'api_key' 		=> '00000000-0000-0000-0000-000000000000',
+	'shipping_method_code'	=> 90010,
+	'timestamp' 	=> time(),
+];
 
-	$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+```
+
 ### Response
+
 Maximum dimensions for icon are 120px width and 55px height.
-Response 
+
+Example:
 ```json
 {
 	"name": "Bussipaketti",
@@ -527,11 +537,16 @@ Response
 	"icon": "https:\/\/static.pakettikauppa.fi\/logos\/matkahuolto\/logo.jpg"
 }
 ```
+
 ## List avaible additional services [OBSOLETE]
+
 Lists possible additional services that are available for a shipping method. 
 Obsolete information
+
 Information this API provides can be found from "list available shipping methods" or by "get information about shipping method".
+
 ### Request
+
 POST: /additional-services/list
 
 |Param name|Type|Required|Content|
@@ -671,7 +686,7 @@ Maximum dimensions for provider logo are 120px width and 55px height.
 }]
 ```
 
-## Defining a pickup point in Prinetti API
+### Defining a pickup point in Prinetti API
 In the original Prinetti API SmartPOST product code (2106) was used, along with using the pickup points address as receiver, to direct a packet to a parcel locker of choice. With Pakettikauppa.fi implementation this method is obsolete and would only work when the parcel was shipped with Posti. To accommodate multiple parcel service providers a new AdditionalService.ServiceCode (2106) is added to mark a parcel going to alternate pickup point, with the pickup point id as AdditionalService.Specifier.
 
 If you have implemented a pickup point search API directly with a packet service provider supported by Pakettikauppa.fi (Matkahuolto for example) you can use the point id fetched via your implementation. With the pickup point API Pakettikauppa.fi functions only as a technical wrapper to different parcel service provider between you and the service provider. 
@@ -682,7 +697,7 @@ Additional Service example
 	    <AdditionalService.Specifier name="pickup_point_id">5410</AdditionalService.Specifier>
 	</Consignment.AdditionalService>
 
-# Get info about a single pickup point 
+## Get info about a single pickup point 
 ### Request
 POST: /pickup-point/info
 |Param name	|Type	|Required	|Content|
