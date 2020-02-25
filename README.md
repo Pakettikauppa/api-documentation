@@ -22,6 +22,7 @@ Implementation documentation for the Pakettikauppa logistics service
 |25.1.2019|Single Pickup Point Info and Change Customer Reseller documentation added|
 |3.5.2019|Added information how to add return shipment for DB Schenker while creating origin shipment.|
 |12.11.2019|Removed note about how to search pickup points using provider names.|
+|25.2.2020|Moved API documentation to markdown format|
 
 # Table of contents
 
