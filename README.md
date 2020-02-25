@@ -479,11 +479,11 @@ Get informationa bout a shipping method. This information is the same as in list
 POST: /shipping-methods/get
 |Param name|Type|Required|Content|
 |---|---|---|---|
-|api_key|	UUID|	x	||
-|timestamp|	UNIX TIME|	x	||
-|shipping_method_code|	N 6|	x	||
-|language|	AN 2|		FI, SE or EN. If not specified, FI is assumed.|
-|hash|	AN 64|	x||
+|api_key|UUID|x||
+|timestamp|UNIX TIME|x||
+|shipping_method_code|N 6|x||
+|language|AN 2||FI, SE or EN. If not specified, FI is assumed.|
+|hash|AN 64|x||
 
 Example:
 ```php
@@ -552,9 +552,9 @@ POST: /additional-services/list
 |Param name|Type|Required|Content|
 |---|---|---|---|
 |api_key|UUID|x||	
-|timestamp|UNIX TIME|	x||	
-|language|AN 2|	|	FI, SE or EN. If not specified, FI is assumed.|
-|hash|AN 64|	|x	||
+|timestamp|UNIX TIME|x||	
+|language|AN 2||FI, SE or EN. If not specified, FI is assumed.|
+|hash|AN 64|x||
 List shipping methods 
 ```php
 $post_params = [
@@ -1296,170 +1296,203 @@ In reseller API, api_key is always resellers api_key.
 
 POST: /customer/create
 
-Param name	Type	Required	Content
-api_key	AN	x	
-name	AN 100	x	
-business_id	AN 25	x	
-payment_service_provider	AN 50		CREDIT_CARD
-psp_merchant_id	AN 50	?	Reserved for future use
-marketing_name	AN 100		
-street_address	AN 250	x	
-post_office	AN 100	x	
-postcode	AN 25	x	
-country	AN 25	x	
-phone	AN 25	x	
-email	AN 100	x	
-contact_person_name	AN 100	x	
-contact_person_phone	AN 25	x	
-contact_person_email	AN 100	x	
-hash	AN 64	x	
+|Param name	Type	Required	Content
+|api_key|AN|x||	
+|name|AN 100|x||
+|business_id|AN 25|x||
+|payment_service_provider|AN 50|CREDIT_CARD|
+|psp_merchant_id|AN 50|?|Reserved for future use|
+|marketing_name|AN 100|||	
+|street_address|AN 250|x||	
+|post_office|AN 100|x||	
+|postcode|AN 25|x||	
+|country|AN 25|x||
+|phone|AN 25|x||
+|email|AN 100|x||
+|contact_person_name|AN 100|x||	
+|contact_person_phone|AN 25|x||	
+|contact_person_email|AN 100|x||
+|hash|AN 64|x||
+
 ## Create customer 
-	<?php
+```php
+$post_params = [
+	'api_key'				    	=> '00000000-0000-0000-0000-000000000000'
+	'name'                    			=> 'Puu ja Mutterikauppa Oy',
+	'payment_service_provider'			=> 'CREDIT_CARD', // CREDIT_CARD or "" If empty the customer must login to https:://hallinta.pakettikauppa.fi and set payment method in profile page
+	'business_id'            			=> '1234567-8',
+	'marketing_name'        			=> 'Ikaalisten puut ja mutterit',
+	'street_address'        			=> 'Some street 123',
+	'post_office'            			=> 'Tampere',
+	'postcode'                			=> '33100',
+	'country'                			=> 'Finland',
+	'phone'                    			=> '03 123456789',
+	'email'                    			=> 'sales@puujamutterikauppa.fi',
+	'contact_person_name'    			=> 'Pertti',
+	'contact_person_phone'    			=> '050 123456789',
+	'contact_person_email'    			=> 'pertti@puujamutterikauppa.fi',
+];
 
-	$post_params = [
-		'api_key'				    		=> '00000000-0000-0000-0000-000000000000'
-		'name'                    			=> 'Puu ja Mutterikauppa Oy',
-		'payment_service_provider'			=> 'CREDIT_CARD', // CREDIT_CARD or "" If empty the customer must login to https:://hallinta.pakettikauppa.fi and set payment method in profile page
-	    'business_id'            			=> '1234567-8',
-	    'marketing_name'        			=> 'Ikaalisten puut ja mutterit',
-	    'street_address'        			=> 'Some street 123',
-	    'post_office'            			=> 'Tampere',
-	    'postcode'                			=> '33100',
-	    'country'                			=> 'Finland',
-	    'phone'                    			=> '03 123456789',
-	    'email'                    			=> 'sales@puujamutterikauppa.fi',
-	    'contact_person_name'    			=> 'Pertti',
-	    'contact_person_phone'    			=> '050 123456789',
-	    'contact_person_email'    			=> 'pertti@puujamutterikauppa.fi',
-	];
+ksort($post_params);
 
-	ksort($post_params);
+$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+```
 
-	$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
 ### Response 
 Http code: 201, 401 or 500
- 
-	{
-		"success": true,
-		"customer_id":16,
-		"api_key":"41ec0311-b1a3-4830-a494-c955e1327f48",
-		"secret":"7432e62a68582cb52939f507c4067333",
-		"contract_url":"https://hallinta.pakettikauppa.fi/contract/123425666654321"
-	}
- 
- 
+
+```json
+{
+	"success": true,
+	"customer_id":16,
+	"api_key":"41ec0311-b1a3-4830-a494-c955e1327f48",
+	"secret":"7432e62a68582cb52939f507c4067333",
+	"contract_url":"https://hallinta.pakettikauppa.fi/contract/123425666654321"
+}
+```
+
 ## Update Customer
+
 POST: /customer/update
+
 With the exception of business_id, customer information can be updated freely by the reseller who created the customer.
-### Update 
-	<?php
 
-	$post_params = [
-		'api_key'					=> '00000000-0000-0000-0000-000000000000',
-		'customer_id'				=> '5',	
-		'name'                    	=> 'Puu, Mutteri ja peltikauppa Oy',
-	    'marketing_name'        	=> 'Ikaalisten puut, mutterit ja pellit',
-	    'street_address'        	=> 'Some other street 123',
-	    'post_office'            	=> 'Kilvakkala',
-	    'postcode'                	=> '339530',
-	    'phone'                    	=> '03 987654321',
-	    'contact_person_name'    	=> 'Kalle',
-	    'contact_person_phone'    	=> '050 987654321',
-	    'contact_person_email'    	=> 'kalle@puujamutterikauppa.fi',
-	];
+### Update
 
-	ksort($post_params);
+```php
+$post_params = [
+	'api_key'					=> '00000000-0000-0000-0000-000000000000',
+	'customer_id'				=> '5',	
+	'name'                    	=> 'Puu, Mutteri ja peltikauppa Oy',
+    'marketing_name'        	=> 'Ikaalisten puut, mutterit ja pellit',
+    'street_address'        	=> 'Some other street 123',
+    'post_office'            	=> 'Kilvakkala',
+    'postcode'                	=> '339530',
+    'phone'                    	=> '03 987654321',
+    'contact_person_name'    	=> 'Kalle',
+    'contact_person_phone'    	=> '050 987654321',
+    'contact_person_email'    	=> 'kalle@puujamutterikauppa.fi',
+];
 
-	$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+ksort($post_params);
+
+$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+```
+
 ### Response 
+
 Http code 200, 401 or 500
- 
-	{
-		"success": true || false
-	}
+
+```json
+{
+	"success": true || false
+}
+```
+
 ## List Customers
+
 POST: /customer/list
-Param name	Type	Require
-api_key	UUID	x
-timestamp	UNIX TIME	x
-hash	AN 64	x
-List customers 
-	<?php
 
-	$post_params = [
-		'api_key'	=> '00000000-0000-0000-0000-000000000000',
-		'timestamp	=> time()
-	];
+|Param name|Type|Require|
+|---|---|---|
+|api_key|UUID|x|
+|timestamp|UNIX TIME|x|
+|hash|AN 64|x|
 
-	ksort($post_params);
+Example:
+```php
+$post_params = [
+	'api_key'	=> '00000000-0000-0000-0000-000000000000',
+	'timestamp	=> time()
+];
 
-	$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+ksort($post_params);
+
+$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+```
+
 ### Response 
-	[
-		{
-			"id":34,
-			"name":"Puu ja Mutterikauppa Oy",
-			"business_id":"1234567-8",
-			"active":true
-		},
-		{
-			"id":33,
-			"name":"Jokintoinen kauppa Oy",
-			"business_id":"7654321-8",
-			"active":true
-		}
-	]
+```json
+[
+	{
+		"id":34,
+		"name":"Puu ja Mutterikauppa Oy",
+		"business_id":"1234567-8",
+		"active":true
+	},
+	{
+		"id":33,
+		"name":"Jokintoinen kauppa Oy",
+		"business_id":"7654321-8",
+		"active":true
+	}
+]
+```
+
 ## Deactivate Customer
+
 POST: /customer/deactivate
+
 Deactivates the customer, after deactivation the customer can no longer create new shipping labels. Other services like admin UI continues to work. Reactivation requires contacting Pakettikauppa.fi customer service.
-Param name	Type	Required
-api_key	UUID	x
-customer_id	INT	x
-timestamp	UNIX TIME	x
-hash	AN 64	x
+
+|Param name|Type|Required|
+|---|---|---|
+|api_key|UUID|x|
+|customer_id|INT|x|
+|timestamp|UNIX TIME|x|
+|hash	AN 64	x|
+
 ### Deactivate 
-	<?php
 
-	$post_params = [
-		'api_key'		=> '00000000-0000-0000-0000-000000000000',
-		'customer_id' 	=> 33,
-		'timestamp		=> time()
-	];
+```php
+$post_params = [
+	'api_key'		=> '00000000-0000-0000-0000-000000000000',
+	'customer_id' 	=> 33,
+	'timestamp		=> time()
+];
 
-	ksort($post_params);
+ksort($post_params);
 
-	$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+```
+
 ### Response 
 Http code 200, 401 or 500
- 
-	{
-		"success": true || false
-	}
+```json
+{
+	"success": true || false
+}
+```
+
 If your new customer already has a contract with us, reseller information can be changed with this API.
+
 POST: /customer/change
-Param name	Type	Required	Content
-api_key	UUID	x	
-customer_api_key	UUID	x	Customer's api_key to Pakettikauppa
-hash	AN 64	       x	
-Single pickup point search 
-	<?php
 
-	$post_params = [
-	    'api_key'          => $api_key,
-		'customer_api_key' => $customer_api_key,
-	];
+|Param name|Type|Required|Content|
+|---|---|---|---|
+|api_key|UUID|x||
+|customer_api_key|UUID|x|Customer's api_key to Pakettikauppa|
+|hash|AN64|x||
+ 
+```php
+$post_params = [
+    'api_key'          => $api_key,
+	'customer_api_key' => $customer_api_key,
+];
 
-	ksort($post_params);
+ksort($post_params);
 
-	$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+```
 
 ### Response
 Response 
 Http code 200, 400, 401 or 404
-	{
-		"success":true
-	}
-
+```json
+{
+	"success":true
+}
+```
 
 # Information and support
 Support is available through integration@pakettikauppa.fi
