@@ -492,39 +492,41 @@ Get shipping methods
 ### Response
 Maximum dimensions for icon are 120px width and 55px height.
 Response 
-	{
-		"name": "Bussipaketti",
-		"shipping_method_code": 90010,
-		"description": null,
-		"service_provider": "Matkahuolto",
-		"supported_countries": ["FI", "AX"],
-		"has_pickup_points": false,
-		"home_delivery": false,
-		"additional_services": [{
-			"name": "Postiennakko",
-			"service_code": "3101",
-			"specifiers": [{
-				"name": "amount",
-				"type": "number",
-				"step": "0.01",
-				"min": "0"
-			}, {
-				"name": "account",
-				"type": "text"
-			}, {
-				"name": "reference",
-				"type": "text"
-			}, {
-				"name": "codbic",
-				"type": "text"
-			}]
+```json
+{
+	"name": "Bussipaketti",
+	"shipping_method_code": 90010,
+	"description": null,
+	"service_provider": "Matkahuolto",
+	"supported_countries": ["FI", "AX"],
+	"has_pickup_points": false,
+	"home_delivery": false,
+	"additional_services": [{
+		"name": "Postiennakko",
+		"service_code": "3101",
+		"specifiers": [{
+			"name": "amount",
+			"type": "number",
+			"step": "0.01",
+			"min": "0"
 		}, {
-			"name": "S\u00e4rkyv\u00e4",
-			"service_code": "3104",
-			"specifiers": null
-		}],
-		"icon": "https:\/\/static.pakettikauppa.fi\/logos\/matkahuolto\/logo.jpg"
-	}
+			"name": "account",
+			"type": "text"
+		}, {
+			"name": "reference",
+			"type": "text"
+		}, {
+			"name": "codbic",
+			"type": "text"
+		}]
+	}, {
+		"name": "S\u00e4rkyv\u00e4",
+		"service_code": "3104",
+		"specifiers": null
+	}],
+	"icon": "https:\/\/static.pakettikauppa.fi\/logos\/matkahuolto\/logo.jpg"
+}
+```
 ## List avaible additional services [OBSOLETE]
 Lists possible additional services that are available for a shipping method. 
 Obsolete information
@@ -539,37 +541,39 @@ POST: /additional-services/list
 |language|AN 2|	|	FI, SE or EN. If not specified, FI is assumed.|
 |hash|AN 64|	|x	||
 List shipping methods 
-	<?php
+```php
+$post_params = [
+	'api_key' 		=> '00000000-0000-0000-0000-000000000000',
+	'timestamp' 	=> time(),
+];
 
-	$post_params = [
-		'api_key' 		=> '00000000-0000-0000-0000-000000000000',
-		'timestamp' 	=> time(),
-	];
+$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+```
 
-	$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
 ### Response
 Response 
-	[
-		{
-			"shipping_method_code":2103,
-			"name":"Postiennakko",
-			"service_code":"3101",
-			"description":""
-		},
-		{
-			"shipping_method_code":2103,
-			"name":"Särkyvä",
-			"service_code":"3104",
-			"description":"Erilliskäsiteltävä"
-		},
-		{
-			"shipping_method_code":90010,
-			"name":"Särkyvä",
-			"service_code":"3104",
-			"description":"Varoen käsiteltävä"
-		}
-	]
-
+```json
+[
+	{
+		"shipping_method_code":2103,
+		"name":"Postiennakko",
+		"service_code":"3101",
+		"description":""
+	},
+	{
+		"shipping_method_code":2103,
+		"name":"Särkyvä",
+		"service_code":"3104",
+		"description":"Erilliskäsiteltävä"
+	},
+	{
+		"shipping_method_code":90010,
+		"name":"Särkyvä",
+		"service_code":"3104",
+		"description":"Varoen käsiteltävä"
+	}
+]
+```
 ## Search pickup points
 List possible pickup points for the delivery.
 ### Request
@@ -586,182 +590,204 @@ timestamp	UNIX TIME	x
 hash	AN 64	x	
 
 Search pickup points 
-	<?php
+```php
+$post_params = [
+    'api_key'       => $api_key,
+    'address'       => 'Itsenäisyydenkatu 2'
+    'postcode'      => '33100',
+    'timestamp'     => time()
+];
 
+ksort($post_params);
 
-	$post_params = [
-	    'api_key'       => $api_key,
-	    'address'       => 'Itsenäisyydenkatu 2'
-	    'postcode'      => '33100',
-	    'timestamp'     => time()
-	];
+$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+```
 
-	ksort($post_params);
+```php
+// you can also use the just query param 
+$post_params = [
+    'api_key'       => $api_key,
+    'query'         => 'Itsenäisyydenkatu 2, 33100 Tampere',
+    'timestamp'     => time()
+];
 
-	$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+ksort($post_params);
 
+$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+```
 
-	// you can also use the just query param 
-	$post_params = [
-	    'api_key'       => $api_key,
-	    'query'         => 'Itsenäisyydenkatu 2, 33100 Tampere',
-	    'timestamp'     => time()
-	];
-
-	ksort($post_params);
-
-	$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
 ### Response
 Maximum dimensions for provider logo are 120px width and 55px height.
-Response 
-	[{
-		"provider": "Posti",
-		"pickup_point_id": 356,
-		"name": "Posti, Keskusta",
-		"street_address": "Tullikatu 6",
-		"postcode": "33100",
-		"city": "TAMPERE",
-		"country": "FI",
-		"description": "ma-pe 8.00 - 20.00, la 10.00 - 15.00",
-		"provider_logo": "https://static.pakettikauppa.fi/icons/posti.png",
-		"map_longitude": "23.777128",
-		"map_latitude": "61.4978247"
-	}, {
-		"provider": "Matkahuolto",
-		"pickup_point_id": "5410",
-		"name": "SIWA RAUTATIEKATU\/TAMPERE",
-		"street_address": "RAUTATIENKATU 25",
-		"postcode": "33100",
-		"city": "TAMPERE",
-		"country": "FI",
-		"description": null,
-		"provider_logo": "https://static.pakettikauppa.fi/icons/mh.png",
-		"map_longitude": null,
-		"map_latitude": null
-	},  {
-		"provider": "Matkahuolto",
-		"pickup_point_id": "5038",
-		"name": "SIWA AMURI",
-		"street_address": "PUUVILLATEHTAANK. 12",
-		"postcode": "33210",
-		"city": "TAMPERE",
-		"country": "FI",
-		"description": null,
-		"provider_logo": "https://static.pakettikauppa.fi/icons/mh.png",
-		"map_longitude": null,
-		"map_latitude": null
-	}, {
-		"provider": "DB Schenker",
-		"pickup_point_id": "6679",
-		"name": "R-KIOSKI TRE MINIMARKET",
-		"street_address": "KYLLIKINKATU 11",
-		"postcode": "33100",
-		"city": "TAMPERE",
-		"country": null,
-		"description": "V0730-2200L0730-2200S0900-2200",
-		"provider_logo": "https://static.pakettikauppa.fi/icons/db.png",
-		"map_longitude": null,
-		"map_latitude": null
-	}]
+
+```json
+[{
+	"provider": "Posti",
+	"pickup_point_id": 356,
+	"name": "Posti, Keskusta",
+	"street_address": "Tullikatu 6",
+	"postcode": "33100",
+	"city": "TAMPERE",
+	"country": "FI",
+	"description": "ma-pe 8.00 - 20.00, la 10.00 - 15.00",
+	"provider_logo": "https://static.pakettikauppa.fi/icons/posti.png",
+	"map_longitude": "23.777128",
+	"map_latitude": "61.4978247"
+}, {
+	"provider": "Matkahuolto",
+	"pickup_point_id": "5410",
+	"name": "SIWA RAUTATIEKATU\/TAMPERE",
+	"street_address": "RAUTATIENKATU 25",
+	"postcode": "33100",
+	"city": "TAMPERE",
+	"country": "FI",
+	"description": null,
+	"provider_logo": "https://static.pakettikauppa.fi/icons/mh.png",
+	"map_longitude": null,
+	"map_latitude": null
+},  {
+	"provider": "Matkahuolto",
+	"pickup_point_id": "5038",
+	"name": "SIWA AMURI",
+	"street_address": "PUUVILLATEHTAANK. 12",
+	"postcode": "33210",
+	"city": "TAMPERE",
+	"country": "FI",
+	"description": null,
+	"provider_logo": "https://static.pakettikauppa.fi/icons/mh.png",
+	"map_longitude": null,
+	"map_latitude": null
+}, {
+	"provider": "DB Schenker",
+	"pickup_point_id": "6679",
+	"name": "R-KIOSKI TRE MINIMARKET",
+	"street_address": "KYLLIKINKATU 11",
+	"postcode": "33100",
+	"city": "TAMPERE",
+	"country": null,
+	"description": "V0730-2200L0730-2200S0900-2200",
+	"provider_logo": "https://static.pakettikauppa.fi/icons/db.png",
+	"map_longitude": null,
+	"map_latitude": null
+}]
+```
+
 ## Defining a pickup point in Prinetti API
-In the original Prinetti API SmartPOST product code (2106) was used, along with using the pickup points address as receiver, to direct a packet to a parcel locker of choice. With Pakettikauppa.fi implementation this method is  obsolete and would only work when the parcel was shipped with Posti. To accommodate multiple parcel service providers a new AdditionalService.ServiceCode (2106) is added to mark a parcel going to alternate pickup point, with the pickup point id as AdditionalService.Specifier.
+In the original Prinetti API SmartPOST product code (2106) was used, along with using the pickup points address as receiver, to direct a packet to a parcel locker of choice. With Pakettikauppa.fi implementation this method is obsolete and would only work when the parcel was shipped with Posti. To accommodate multiple parcel service providers a new AdditionalService.ServiceCode (2106) is added to mark a parcel going to alternate pickup point, with the pickup point id as AdditionalService.Specifier.
+
 If you have implemented a pickup point search API directly with a packet service provider supported by Pakettikauppa.fi (Matkahuolto for example) you can use the point id fetched via your implementation. With the pickup point API Pakettikauppa.fi functions only as a technical wrapper to different parcel service provider between you and the service provider. 
 
-Additional Service example 
+Additional Service example
 	<Consignment.AdditionalService>
 	    <AdditionalService.ServiceCode>2106</AdditionalService.ServiceCode>
 	    <AdditionalService.Specifier name="pickup_point_id">5410</AdditionalService.Specifier>
 	</Consignment.AdditionalService>
 
-Get info about a single pickup point 
+# Get info about a single pickup point 
 ### Request
 POST: /pickup-point/info
-Param name	Type	Required	Content
-api_key	UUID	x	
-point_id	AN 9	x	Id of the pick up point
-service_code	AN 5	       x	Service product code. If not specified, service_provider must be specified.
-service_provider	AN 50	       x	Obsolete: Limits search to a service provider(s), possible values can be obtained using "list available shipping methods" API call. If empty, service_code must be specified and will be used.
-timestamp	UNIX TIME	x	
-hash	AN 64	x	
-Single pickup point search 
-	<?php
+|Param name	|Type	|Required	|Content|
+|---	|---	|---	|---	|
+|api_key	|UUID|	x|	|	|
+|point_id	|AN 9|	x|Id of the pick up point|
+|service_code	|AN 5|	x|	|Service product code. If not specified, service_provider must be specified.|
+|service_provider	|AN 50	|x	|Obsolete: Limits search to a service provider(s), possible values can be| obtained using "list available shipping methods" API call. If empty, service_code must be specified and will be used.|
+|timestamp	|UNIX TIME	|x	||
+|hash	|AN 64	|x	||
 
-	$url = 'https://apitest.pakettikauppa.fi/pickup-point/info';
-	$secret = '1234567890ABCDEF';
+Example:
 
-	$post_params = [
-	    'api_key'          => $api_key,
-		'point_id'         => '905253201',
-		'service_code'     => '2103',
-		'service_provider' => 'Posti',
-		'timestamp' => time(),
-	];
+```php
+$url = 'https://apitest.pakettikauppa.fi/pickup-point/info';
+$secret = '1234567890ABCDEF';
 
-	ksort($post_params);
+$post_params = [
+	'api_key'          => $api_key,
+	'point_id'         => '905253201',
+	'service_code'     => '2103',
+	'service_provider' => 'Posti',
+	'timestamp' => time(),
+];
 
-	$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+ksort($post_params);
 
-	$ch = curl_init($url);
-	curl_setopt($ch, CURLOPT_POST, 1);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_params));
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	$output = curl_exec($ch);
+$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_params));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+$output = curl_exec($ch);
+```
+
 ### Response
 Maximum dimensions for provider logo are 120px width and 55px height.
 Response 
-	{
-	  "provider": "Posti",
-	  "provider_code": "Posti",
-	  "provider_logo": "https:\/\/static.pakettikauppa.fi\/logos\/posti\/1.1_Posti_logo_Posti_Orange_rgb.png",
-	  "pickup_point_id": "905253201",
-	  "name": "Pakettiautomaatti, Sale Toppila",
-	  "street_address": "Paakakatu 2",
-	  "postcode": "90525",
-	  "city": "OULU",
-	  "country": "FI",
-	  "description": "ma-la 7.00 - 22.00, su 9.00 - 22.00",
-	  "map_longitude": "25.433573289",
-	  "map_latitude": "65.045625281",
-	  "point_type": "PARCEL_LOCKER"
-	}
-
+```json
+{
+	"provider": "Posti",
+	"provider_code": "Posti",
+	"provider_logo": "https:\/\/static.pakettikauppa.fi\/logos\/posti\/1.1_Posti_logo_Posti_Orange_rgb.png",
+	"pickup_point_id": "905253201",
+	"name": "Pakettiautomaatti, Sale Toppila",
+	"street_address": "Paakakatu 2",
+	"postcode": "90525",
+	"city": "OULU",
+	"country": "FI",
+	"description": "ma-la 7.00 - 22.00, su 9.00 - 22.00",
+	"map_longitude": "25.433573289",
+	"map_latitude": "65.045625281",
+	"point_type": "PARCEL_LOCKER"
+}
+```
 
 ## Get Shipment status
 ### Request
+
 POST: /shipment/status
-Param name	Type	Required
-api_key	UUID	x
-tracking_code	AN 100	x
-timestamp	UNIX TIME	x
-hash	AN 64	x
-Shipment status 
-	$post_params = [
-	    'api_key'       => $api_key,
-	    'tracking_code' => 'JJFI64574900000137203',
-	    'timestamp'     => time()
-	];
 
-	ksort($post_params);
+|Param name	|Type	|Required|
+|---	|---	|---	|---	|
+|api_key	|UUID	|x	|
+|tracking_code	|AN 100	|x	|
+|timestamp	|UNIX TIME	|x	|
+|hash	|AN 64	|x	|
 
-	$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+Example:
+```php
+$post_params = [
+    'api_key'       => $api_key,
+    'tracking_code' => 'JJFI64574900000137203',
+    'timestamp'     => time()
+];
+
+ksort($post_params);
+
+$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+```
+
 ### Response
-Response 
-	[
-		{
-			"message_created":"2016-09-30 17:37:00",
-			"reference":"1475233831",
-			"tracking_code":"JJFI64574900000137203",
-			"measured_weight":"0",
-			"measured_volume":"0",
-			"status_code":"68",
-			"receiver_name":"",
-			"event_timestamp":"2016-09-30 17:34:00",
-			"postcode":"87700",
-			"post_office":"KAJAANI"
-		}
-	]
+
+Example:
+```json
+[
+	{
+		"message_created":"2016-09-30 17:37:00",
+		"reference":"1475233831",
+		"tracking_code":"JJFI64574900000137203",
+		"measured_weight":"0",
+		"measured_volume":"0",
+		"status_code":"68",
+		"receiver_name":"",
+		"event_timestamp":"2016-09-30 17:34:00",
+		"postcode":"87700",
+		"post_office":"KAJAANI"
+	}
+]
+```
 ### Shipment status codes
+
 Status codes are most part same as described in implementation guide of IFTSTA transport status documentation by Posti.
+
 Status Code	Message FI	Message EN
 13	Lähetys on noudettu lähettäjältä	Item is collected from sender - picked up
 20	Lähetylle on tehty poikkeama	Exception
@@ -778,41 +804,57 @@ Status Code	Message FI	Message EN
 99	Lähetys lähdössä ulkomaille	Outbound
 
 ## Cancel shipment
+
 Cancels the shipment. Also refunds customers if it's possible. Only shipments that haven't been sent, can be cancelled.
+
 ### Request
+
 POST: /shipment/cancel
+
 Param name	Type	Required	Content
 api_key	UUID	x	
 shipment_id	UUID	x	Original shipments UUID (as in response.reference@uuid)
 timestamp	UNIX TIME	x	
 hash	AN 64	x	
-Cancel shipment 
-	<?php
 
+### Cancel shipment 
 
-	$post_params = [
-	    'api_key'       => $api_key,
-	    'shipment_id'   => 'df202295-b950-46a9-8125-0e7921924620',
-	    'timestamp'     => time()
-	];
+```php
+$post_params = [
+    'api_key'       => $api_key,
+    'shipment_id'   => 'df202295-b950-46a9-8125-0e7921924620',
+    'timestamp'     => time()
+];
 
-	ksort($post_params);
+ksort($post_params);
 
-	$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+```
 
 ### Response
-Response 
-	{
-		success: true
-	}
 
-	{
-		success: false
-	}
+Example:
+```json
+{
+	success: true
+}
+```
+
+Example:
+```
+{
+	success: false
+}
+```
+
 ## Callback
+
 Callback service is used to push notifications from the tracking data back to client system.
+
 ### Server request
+
 POST: callback url
+
 Param name	Type	Required	Details
 api_key	UUID	x	
 tracking_code	AN 100	x	
@@ -822,41 +864,59 @@ event	N	x	See "Shipment status codes"
 object	JSON	x	JSON presentation of the event. Object is same which is returned from shipment/status API.
 hash	AN 64	x	
 Hash calculation example 
-	$post_params = [
-	    'api_key'       => $api_key,
-	    'tracking_code' => 'JJFI64574900000137203',
-		'event'			=> 68,
-		'object'		=> '{"message_created":"2016-09-30 17:37:00", "reference":"1475233831", "tracking_code":"JJFI64574900000137203", "measured_weight":"0", "measured_volume":"0", "status_code":"68", "receiver_name":"", "event_timestamp":"2016-09-30 17:34:00", "postcode":"87700", "post_office":"KAJAANI"}',
-	    'timestamp'     => time()
-	];
+```php
+$post_params = [
+    'api_key' => $api_key,
+    'tracking_code' => 'JJFI64574900000137203',
+	'event'	=> 68,
+	'object' => '{"message_created":"2016-09-30 17:37:00", "reference":"1475233831", "tracking_code":"JJFI64574900000137203", "measured_weight":"0", "measured_volume":"0", "status_code":"68", "receiver_name":"", "event_timestamp":"2016-09-30 17:34:00", "postcode":"87700", "post_office":"KAJAANI"}',
+    'timestamp' => time()
+];
 
-	ksort($post_params);
+ksort($post_params);
 
-	$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
-Client response
+$post_params['hash'] =  hash_hmac('sha256', join('&', $post_params), $secret);
+```
+
+### Client response
+
 Client have to respond with HTTP status code 200 and with a valid JSON -object. If the client system does not respond in 10 seconds or responds in some other than correct message and status server will try to send data again after 15 minutes. Server will try to send notification to client multiple times before it stops trying.
-JSON response example 
-	{
-		success: true
-	}
-Full HTTP response example response 
-	HTTP/1.1 200 OK
-	Date: Tue, 12 Sep 2017 10:54:56 GMT
-	Server: Apache
-	Last-Modified: Tue, 12 Sep 2017 10:54:43 GMT
-	Accept-Ranges: bytes
-	Content-Length: 18
-	Connection: close
-	Content-Type: application/json
 
-	{
-		success: true
-	}
+JSON response example 
+
+```json
+{
+	success: true
+}
+```
+
+Full HTTP response example response 
+
+```
+HTTP/1.1 200 OK
+Date: Tue, 12 Sep 2017 10:54:56 GMT
+Server: Apache
+Last-Modified: Tue, 12 Sep 2017 10:54:43 GMT
+Accept-Ranges: bytes
+Content-Length: 18
+Connection: close
+Content-Type: application/json
+
+{
+	success: true
+}
+```
+
 # Prinetti API
+
 Prinetti API is an implementation of a service that was hosted by the Finnish post office but with some altered, missing  or added functionality.
+
 A working implementation of a Prinetti client should be compatible with Pakettikauppa.fi API with without major changes. To use the Pakettikauppa.fi API the client must change the end point URLs to match the URLs below and set the client to use the Account id and Secret key provided by Pakettikauppa.fi.
+
 Data can be sent as ISO-8859-1 or UTF-8. If using ISO-8859-1, XML encoding attribute has to be set correctly or result will be invalid XML document.
+
 ## Create Shipment
+
 POST: /prinetti/create-shipment
  
 Element	Presence	Definition	Data type	Optional / Mandatory
@@ -932,193 +992,199 @@ Tracking callback URL	9901	url	URL	URL where Pakettikauppa posts data when new t
 Label code	9902			If defined, generates unique code for the label that can be used to send the shipment without printing the label. (Posti Easy Sending Code /Matkahuolto activation code) Using this feature can have performance impact.
 ### Minimal XML example
 A single packet, no additional services.
-Minimal xml 
-	<?xml version="1.0" encoding="UTF-8"?>
-	<eChannel>
-	    <ROUTING>
-		<Routing.Account>00000000-0000-0000-0000-000000000000</Routing.Account>
-		<Routing.Key>1234567890ABCDEF</Routing.Key>
-		<Routing.Id>1464524676</Routing.Id>
-		<Routing.Name>puitajamuttereita.fi</Routing.Name>
-		<Routing.Time>20160529152436</Routing.Time>
-	    </ROUTING>
-	    <Shipment>
-		<Shipment.Sender>
-		    <Sender.Name1>Sender name</Sender.Name1>
-		    <Sender.Addr1>Some address</Sender.Addr1>
-		    <Sender.Postcode>33100</Sender.Postcode>
-		    <Sender.City>Tampere</Sender.City>
-		    <Sender.Country>FI</Sender.Country>
-		    <Sender.Vatcode>1234567-8</Sender.Vatcode>
-		</Shipment.Sender>
-		<Shipment.Recipient>
-		    <Recipient.Name1>Receiver name</Recipient.Name1>
-		    <Recipient.Addr1>Some address</Recipient.Addr1>
-		    <Recipient.Postcode>33100</Recipient.Postcode>
-		    <Recipient.City>Tampere</Recipient.City>
-		    <Recipient.Country>FI</Recipient.Country>
-		    <Recipient.Phone>123456789</Recipient.Phone>
-		    <Recipient.Email>someone@example.com</Recipient.Email>
-		</Shipment.Recipient>
-		<Shipment.Consignment>
-		    <Consignment.Reference>123456879</Consignment.Reference>
-		    <Consignment.Product>2103</Consignment.Product>
-		    <Consignment.Parcel>
-			<Parcel.Packagetype>PC</Parcel.Packagetype>
-			<Parcel.Weight>1.2</Parcel.Weight>
-			<Parcel.Volume>0.06</Parcel.Volume>
-			<Parcel.Contents>Nuts and Bolts</Parcel.Contents>
-		    </Consignment.Parcel>
-		</Shipment.Consignment>
-	    </Shipment>
-	</eChannel>
+Minimal xml
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<eChannel>
+    <ROUTING>
+	<Routing.Account>00000000-0000-0000-0000-000000000000</Routing.Account>
+	<Routing.Key>1234567890ABCDEF</Routing.Key>
+	<Routing.Id>1464524676</Routing.Id>
+	<Routing.Name>puitajamuttereita.fi</Routing.Name>
+	<Routing.Time>20160529152436</Routing.Time>
+    </ROUTING>
+    <Shipment>
+	<Shipment.Sender>
+	    <Sender.Name1>Sender name</Sender.Name1>
+	    <Sender.Addr1>Some address</Sender.Addr1>
+	    <Sender.Postcode>33100</Sender.Postcode>
+	    <Sender.City>Tampere</Sender.City>
+	    <Sender.Country>FI</Sender.Country>
+	    <Sender.Vatcode>1234567-8</Sender.Vatcode>
+	</Shipment.Sender>
+	<Shipment.Recipient>
+	    <Recipient.Name1>Receiver name</Recipient.Name1>
+	    <Recipient.Addr1>Some address</Recipient.Addr1>
+	    <Recipient.Postcode>33100</Recipient.Postcode>
+	    <Recipient.City>Tampere</Recipient.City>
+	    <Recipient.Country>FI</Recipient.Country>
+	    <Recipient.Phone>123456789</Recipient.Phone>
+	    <Recipient.Email>someone@example.com</Recipient.Email>
+	</Shipment.Recipient>
+	<Shipment.Consignment>
+	    <Consignment.Reference>123456879</Consignment.Reference>
+	    <Consignment.Product>2103</Consignment.Product>
+	    <Consignment.Parcel>
+		<Parcel.Packagetype>PC</Parcel.Packagetype>
+		<Parcel.Weight>1.2</Parcel.Weight>
+		<Parcel.Volume>0.06</Parcel.Volume>
+		<Parcel.Contents>Nuts and Bolts</Parcel.Contents>
+	    </Consignment.Parcel>
+	</Shipment.Consignment>
+    </Shipment>
+</eChannel>
+```
 
 ### Full example with additional services
+
 Multipacket shipment via Matkahuolto, cash on delivery. Has multiple elements from the original Prinetti API that are not used with Pakettikauppa.fi implementation.
+
 Full XML 
-	<?xml version="1.0" encoding="UTF-8"?>
-	<eChannel>
 
-	    <ROUTING>
-		<Routing.Target>1</Routing.Target><!-- Ignored -->
-		<Routing.Source>505</Routing.Source><!-- Ignored -->
-		<Routing.Account>00000000-0000-0000-0000-000000000000</Routing.Account>
-		<Routing.Key>1234567890ABCDEF</Routing.Key>
-		<Routing.Id>1479032410</Routing.Id>
-		<Routing.Name>Testisanoma</Routing.Name>
-		<Routing.Time>20161113122010</Routing.Time>
-		<Routing.Version>1</Routing.Version><!-- Ignored -->
-		<Routing.Mode>0</Routing.Mode><!-- Ignored -->
-		<Routing.Comment>Comment</Routing.Comment><!-- Ignored -->
-	    </ROUTING>
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<eChannel>
 
-	    <Shipment>
-		<Shipment.Sender>
-		    <Sender.Contractid>123456</Sender.Contractid><!-- Ignored -->
-		    <Sender.Name1>Nuts and bolts Ltd</Sender.Name1>
-		    <Sender.Name2></Sender.Name2>
-		    <Sender.Addr1>Somestreet 123</Sender.Addr1>
-		    <Sender.Addr2></Sender.Addr2>
-		    <Sender.Addr3></Sender.Addr3>
-		    <Sender.Postcode>04320</Sender.Postcode>
-		    <Sender.City>Tuusula</Sender.City>
-		    <Sender.Country>FI</Sender.Country>
-		    <Sender.Phone></Sender.Phone>
-		    <Sender.Vatcode></Sender.Vatcode>
-		</Shipment.Sender>
+    <ROUTING>
+	<Routing.Target>1</Routing.Target><!-- Ignored -->
+	<Routing.Source>505</Routing.Source><!-- Ignored -->
+	<Routing.Account>00000000-0000-0000-0000-000000000000</Routing.Account>
+	<Routing.Key>1234567890ABCDEF</Routing.Key>
+	<Routing.Id>1479032410</Routing.Id>
+	<Routing.Name>Testisanoma</Routing.Name>
+	<Routing.Time>20161113122010</Routing.Time>
+	<Routing.Version>1</Routing.Version><!-- Ignored -->
+	<Routing.Mode>0</Routing.Mode><!-- Ignored -->
+	<Routing.Comment>Comment</Routing.Comment><!-- Ignored -->
+    </ROUTING>
 
-		<Shipment.Recipient>
-		    <Recipient.Code></Recipient.Code><!-- Ignored -->
-		    <Recipient.Name1>John Doe</Recipient.Name1>
-		    <Recipient.Name2></Recipient.Name2>
-		    <Recipient.Addr1>Doe street 123 A 123</Recipient.Addr1>
-		    <Recipient.Addr2></Recipient.Addr2>
-		    <Recipient.Addr3></Recipient.Addr3>
-		    <Recipient.Postcode>33100</Recipient.Postcode>
-		    <Recipient.City>Tampere</Recipient.City>
-		    <Recipient.Country>FI</Recipient.Country>
-		    <Recipient.Phone>123123123</Recipient.Phone>
-		    <Recipient.Vatcode></Recipient.Vatcode>
-		    <Recipient.Email>john@doe.com</Recipient.Email>
-		</Shipment.Recipient>
+    <Shipment>
+	<Shipment.Sender>
+	    <Sender.Contractid>123456</Sender.Contractid><!-- Ignored -->
+	    <Sender.Name1>Nuts and bolts Ltd</Sender.Name1>
+	    <Sender.Name2></Sender.Name2>
+	    <Sender.Addr1>Somestreet 123</Sender.Addr1>
+	    <Sender.Addr2></Sender.Addr2>
+	    <Sender.Addr3></Sender.Addr3>
+	    <Sender.Postcode>04320</Sender.Postcode>
+	    <Sender.City>Tuusula</Sender.City>
+	    <Sender.Country>FI</Sender.Country>
+	    <Sender.Phone></Sender.Phone>
+	    <Sender.Vatcode></Sender.Vatcode>
+	</Shipment.Sender>
 
-		<Shipment.Consignment>
-		    <Consignment.Reference>3211479032410</Consignment.Reference>
-		    <Consignment.Product>90010</Consignment.Product>
-		    <Consignment.Contentcode>D</Consignment.Contentcode>
-		    <Consignment.ReturnInstruction>E</Consignment.ReturnInstruction>
-		    <Consignment.Invoicenumber/>
-		    <Consignment.Merchandisevalue>100</Consignment.Merchandisevalue>
+	<Shipment.Recipient>
+	    <Recipient.Code></Recipient.Code><!-- Ignored -->
+	    <Recipient.Name1>John Doe</Recipient.Name1>
+	    <Recipient.Name2></Recipient.Name2>
+	    <Recipient.Addr1>Doe street 123 A 123</Recipient.Addr1>
+	    <Recipient.Addr2></Recipient.Addr2>
+	    <Recipient.Addr3></Recipient.Addr3>
+	    <Recipient.Postcode>33100</Recipient.Postcode>
+	    <Recipient.City>Tampere</Recipient.City>
+	    <Recipient.Country>FI</Recipient.Country>
+	    <Recipient.Phone>123123123</Recipient.Phone>
+	    <Recipient.Vatcode></Recipient.Vatcode>
+	    <Recipient.Email>john@doe.com</Recipient.Email>
+	</Shipment.Recipient>
 
-		    <Consignment.AdditionalService><!-- Cash on delivery, Postiennakko/Bussiennakko -->
-			<AdditionalService.ServiceCode>3101</AdditionalService.ServiceCode>
-			<AdditionalService.Specifier name="amount">150</AdditionalService.Specifier>
-			<AdditionalService.Specifier name="account">FI2180000012345678</AdditionalService.Specifier>
-			<AdditionalService.Specifier name="codbic">DABAFIHH</AdditionalService.Specifier>
-			<AdditionalService.Specifier name="reference">12344</AdditionalService.Specifier>
-		    </Consignment.AdditionalService>
+	<Shipment.Consignment>
+	    <Consignment.Reference>3211479032410</Consignment.Reference>
+	    <Consignment.Product>90010</Consignment.Product>
+	    <Consignment.Contentcode>D</Consignment.Contentcode>
+	    <Consignment.ReturnInstruction>E</Consignment.ReturnInstruction>
+	    <Consignment.Invoicenumber/>
+	    <Consignment.Merchandisevalue>100</Consignment.Merchandisevalue>
 
-				<Consignment.AdditionalService>
-					<AdditionalService.ServiceCode>2106</AdditionalService.ServiceCode>
-					<AdditionalService.Specifier name="pickup_point_id">5410</AdditionalService.Specifier>
-				</Consignment.AdditionalService>
+	    <Consignment.AdditionalService><!-- Cash on delivery, Postiennakko/Bussiennakko -->
+		<AdditionalService.ServiceCode>3101</AdditionalService.ServiceCode>
+		<AdditionalService.Specifier name="amount">150</AdditionalService.Specifier>
+		<AdditionalService.Specifier name="account">FI2180000012345678</AdditionalService.Specifier>
+		<AdditionalService.Specifier name="codbic">DABAFIHH</AdditionalService.Specifier>
+		<AdditionalService.Specifier name="reference">12344</AdditionalService.Specifier>
+	    </Consignment.AdditionalService>
 
-		    <Consignment.Currency>EUR</Consignment.Currency>
-		    <Consignment.AdditionalInfo>
-			<AdditionalInfo.Text>Puita ja muttereita</AdditionalInfo.Text>
-		    </Consignment.AdditionalInfo>
+			<Consignment.AdditionalService>
+				<AdditionalService.ServiceCode>2106</AdditionalService.ServiceCode>
+				<AdditionalService.Specifier name="pickup_point_id">5410</AdditionalService.Specifier>
+			</Consignment.AdditionalService>
 
-		    <Consignment.Parcel type="normal">
-			<Parcel.Reference>123456</Parcel.Reference>
-			<Parcel.Packagetype>PC</Parcel.Packagetype>
-			<Parcel.Weight unit="kg">1</Parcel.Weight>
-			<Parcel.Volume unit="m3">0.03</Parcel.Volume>
-			<Parcel.Infocode>1012</Parcel.Infocode>
-			<Parcel.Contents>Puita ja muttereita</Parcel.Contents>
-			<Parcel.ReturnService>123</Parcel.ReturnService>
-			<Parcel.contentline><!-- Customs declaration info -->
-			    <contentline.description>Puita</contentline.description>
-			    <contentline.quantity>1</contentline.quantity>
-			    <contentline.currency>EUR</contentline.currency>
-			    <contentline.netweight>1</contentline.netweight>
-			    <contentline.value>100</contentline.value>
-			    <contentline.countryoforigin>FI</contentline.countryoforigin>
-			    <contentline.tariffcode>9608101000</contentline.tariffcode>
-			</Parcel.contentline>
-		    </Consignment.Parcel>
+	    <Consignment.Currency>EUR</Consignment.Currency>
+	    <Consignment.AdditionalInfo>
+		<AdditionalInfo.Text>Puita ja muttereita</AdditionalInfo.Text>
+	    </Consignment.AdditionalInfo>
 
-		    <Consignment.Parcel type="normal">
-			<Parcel.Reference>1234567</Parcel.Reference>
-			<Parcel.Packagetype>PC</Parcel.Packagetype>
-			<Parcel.Weight unit="kg">2</Parcel.Weight>
-			<Parcel.Volume unit="m3">0.04</Parcel.Volume>
-			<Parcel.Infocode>1012</Parcel.Infocode>
-			<Parcel.Contents>Muttereita ja puita</Parcel.Contents>
-			<Parcel.ReturnService>123</Parcel.ReturnService>
-			<Parcel.contentline>
-			    <contentline.description>Muttereita</contentline.description>
-			    <contentline.quantity>1</contentline.quantity>
-			    <contentline.currency>EUR</contentline.currency>
-			    <contentline.netweight>1</contentline.netweight>
-			    <contentline.value>100</contentline.value>
-			    <contentline.countryoforigin>FI</contentline.countryoforigin>
-			    <contentline.tariffcode>9608101000</contentline.tariffcode>
-			</Parcel.contentline>
-		     </Consignment.Parcel>
+	    <Consignment.Parcel type="normal">
+		<Parcel.Reference>123456</Parcel.Reference>
+		<Parcel.Packagetype>PC</Parcel.Packagetype>
+		<Parcel.Weight unit="kg">1</Parcel.Weight>
+		<Parcel.Volume unit="m3">0.03</Parcel.Volume>
+		<Parcel.Infocode>1012</Parcel.Infocode>
+		<Parcel.Contents>Puita ja muttereita</Parcel.Contents>
+		<Parcel.ReturnService>123</Parcel.ReturnService>
+		<Parcel.contentline><!-- Customs declaration info -->
+		    <contentline.description>Puita</contentline.description>
+		    <contentline.quantity>1</contentline.quantity>
+		    <contentline.currency>EUR</contentline.currency>
+		    <contentline.netweight>1</contentline.netweight>
+		    <contentline.value>100</contentline.value>
+		    <contentline.countryoforigin>FI</contentline.countryoforigin>
+		    <contentline.tariffcode>9608101000</contentline.tariffcode>
+		</Parcel.contentline>
+	    </Consignment.Parcel>
 
-		 </Shipment.Consignment>
-	     </Shipment>
-	</eChannel>
+	    <Consignment.Parcel type="normal">
+		<Parcel.Reference>1234567</Parcel.Reference>
+		<Parcel.Packagetype>PC</Parcel.Packagetype>
+		<Parcel.Weight unit="kg">2</Parcel.Weight>
+		<Parcel.Volume unit="m3">0.04</Parcel.Volume>
+		<Parcel.Infocode>1012</Parcel.Infocode>
+		<Parcel.Contents>Muttereita ja puita</Parcel.Contents>
+		<Parcel.ReturnService>123</Parcel.ReturnService>
+		<Parcel.contentline>
+		    <contentline.description>Muttereita</contentline.description>
+		    <contentline.quantity>1</contentline.quantity>
+		    <contentline.currency>EUR</contentline.currency>
+		    <contentline.netweight>1</contentline.netweight>
+		    <contentline.value>100</contentline.value>
+		    <contentline.countryoforigin>FI</contentline.countryoforigin>
+		    <contentline.tariffcode>9608101000</contentline.tariffcode>
+		</Parcel.contentline>
+	     </Consignment.Parcel>
+
+	 </Shipment.Consignment>
+     </Shipment>
+</eChannel>
+```
 
 ### Request
 
 Create shipment 
-	<?php
+
+```php
+$url = 'https://apitest.pakettikauppa.fi/prinetti/create-shipment';
+$secret = '1234567890ABCDEF';
 
 
-	$url = 'https://apitest.pakettikauppa.fi/prinetti/create-shipment';
-	$secret = '1234567890ABCDEF';
+$xml = simplexml_load_file("prinetti_example.xml");
 
 
-	$xml = simplexml_load_file("prinetti_example.xml");
+$account = (string)$xml->ROUTING->{"Routing.Account"};
+$id = (string)$xml->ROUTING->{"Routing.Id"};
 
+$xml->ROUTING->{'Routing.Key'} = md5($account .$id .$secret);
 
-	$account = (string)$xml->ROUTING->{"Routing.Account"};
-	$id = (string)$xml->ROUTING->{"Routing.Id"};
+$ch = curl_init($url);
 
-	$xml->ROUTING->{'Routing.Key'} = md5($account .$id .$secret);
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
+curl_setopt($ch, CURLOPT_POSTFIELDS, $xml->asXML());
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-	$ch = curl_init($url);
+$output = curl_exec($ch);
+```
 
-	curl_setopt($ch, CURLOPT_POST, 1);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $xml->asXML());
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-	$output = curl_exec($ch);
-
-
-Response
+## Response
 Element	Presence	Definition	Data type	Mandatory	Parent
 Response	1			x	
 response.status	1	Status code	N	x	Response
@@ -1137,71 +1203,84 @@ Code	Definition
 240	System failure
 
 ### Response 
-	<?xml version="1.0" encoding="UTF-8"?>
-	<Response>
-	    <response.status>0</response.status>
-	    <response.message>OK</response.message>
-	    <response.reference uuid="00000000-0000-0000-0000-000000000000">1479034267</response.reference>
-	    <response.trackingcode labelcode="12345" uuid="00000000-0000-0000-0000-000000000000">JJFI64574900000202361</response.trackingcode>
-	</Response>
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+    <response.status>0</response.status>
+    <response.message>OK</response.message>
+    <response.reference uuid="00000000-0000-0000-0000-000000000000">1479034267</response.reference>
+    <response.trackingcode labelcode="12345" uuid="00000000-0000-0000-0000-000000000000">JJFI64574900000202361</response.trackingcode>
+</Response>
+```
 
 ## Fetch Shipping Label
+
 POST: /prinetti/get-shipping-label
+
 XML example
 
-Printing request xml 
-	<?xml version="1.0" encoding="ISO-8859-1"?>
-	<eChannel>
-	<ROUTING>
-		<Routing.Account>00000000-0000-0000-0000-000000000000</Routing.Account>	
-		<Routing.Key>1234567890ABCDEF</Routing.Key>
-		<Routing.Id>1479035179</Routing.Id>
-		<Routing.Name>Testisanoma</Routing.Name>
-		<Routing.Time>20161113130618</Routing.Time>
-	</ROUTING>
-	    <PrintLabel responseFormat="File"><!-- "File" and "inline" are supported. "File" is default -->
-		<Reference>1479034267</Reference>
-		<TrackingCode>JJFI64574900000202361</TrackingCode>
-	    </PrintLabel>
-	</eChannel>
+```xml
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<eChannel>
+<ROUTING>
+	<Routing.Account>00000000-0000-0000-0000-000000000000</Routing.Account>	
+	<Routing.Key>1234567890ABCDEF</Routing.Key>
+	<Routing.Id>1479035179</Routing.Id>
+	<Routing.Name>Testisanoma</Routing.Name>
+	<Routing.Time>20161113130618</Routing.Time>
+</ROUTING>
+    <PrintLabel responseFormat="File"><!-- "File" and "inline" are supported. "File" is default -->
+	<Reference>1479034267</Reference>
+	<TrackingCode>JJFI64574900000202361</TrackingCode>
+    </PrintLabel>
+</eChannel>
+```
 
 ### Request
-Request 
-	<?php
 
+Example:
+```php
+$url = 'https://apitest.pakettikauppa.fi/prinetti/get-shipping-label';
+$secret = '1234567890ABCDEF';
 
-	$url = 'https://apitest.pakettikauppa.fi/prinetti/get-shipping-label';
-	$secret = '1234567890ABCDEF';
+$xml = simplexml_load_file("prinetti_example.xml");
 
-	$xml = simplexml_load_file("prinetti_example.xml");
+$account = (string)$xml->ROUTING->{"Routing.Account"};
+$id = (string)$xml->ROUTING->{"Routing.Id"};
 
-	$account = (string)$xml->ROUTING->{"Routing.Account"};
-	$id = (string)$xml->ROUTING->{"Routing.Id"};
+$xml->ROUTING->{'Routing.Key'} = md5($account .$id .$secret);
 
-	$xml->ROUTING->{'Routing.Key'} = md5($account .$id .$secret);
+$ch = curl_init($url);
 
-	$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
+curl_setopt($ch, CURLOPT_POSTFIELDS, $xml->asXML());
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-	curl_setopt($ch, CURLOPT_POST, 1);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $xml->asXML());
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+$output = curl_exec($ch);	
+```
 
-	$output = curl_exec($ch);
 ### Response
+
 If responseFormat was File the following xml is returned.
-Get shipping label response 
-	<?xml version="1.0" encoding="UTF-8"?>
-	<Response>
-	    <response.status>0</response.status>
-	    <response.message>OK</response.message>
-	    <response.file encode="base64">JVBERi0xLjcKJeLjz9MKNiAwIG9i...</response.file>
-	</Response>
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+    <response.status>0</response.status>
+    <response.message>OK</response.message>
+    <response.file encode="base64">JVBERi0xLjcKJeLjz9MKNiAwIG9i...</response.file>
+</Response>
+```
 
 # Reseller API
+
 In reseller API, api_key is always resellers api_key.
+
 ## Create Customer
+
 POST: /customer/create
+
 Param name	Type	Required	Content
 api_key	AN	x	
 name	AN 100	x	
