@@ -592,17 +592,20 @@ Response
 ## Search pickup points
 List possible pickup points for the delivery.
 ### Request
+
 POST: /pickup-points/search
-Param name	Type	Required	Content
-api_key	UUID	x	
-address	AN 400		
-postcode	AN 5		
-country	AN 2		ISO 3166 style. If not specified, FI is used.
-service_provider	AN 10		Comma separeted list of products. Product codes can be obtained using "list available shipping methods" API call.
-limit	N		Limit search results. Defaults to 5. Possible values are from 1 to 15.
-query	AN		Address string query. If used address and postcode params are ignored and geolocation search is done by just using this string.
-timestamp	UNIX TIME	x	
-hash	AN 64	x	
+
+|Param name     |Type   |Required       |Content|
+|---|----|----|----|
+|api_key        |UUID   |x      ||
+|address        |AN 400 |       ||
+|postcode       |AN 5   |       ||
+|country        |AN 2   |       |ISO 3166 style. If not specified, FI is used.|
+|service_provider       |AN 10  |       |Comma separeted list of products. Product codes can be obtained using "list available shipping methods" API call.|
+|limit  |N      |       |Limit search results. Defaults to 5. Possible values are from 1 to 15.|
+|query  |AN     |       |Address string query. If used address and postcode params are ignored and geolocation search is done by just using this string.|
+|timestamp      |UNIX TIME      |x      ||
+|hash   |AN 64  |x      ||
 
 Search pickup points 
 ```php
@@ -687,19 +690,24 @@ Maximum dimensions for provider logo are 120px width and 55px height.
 ```
 
 ### Defining a pickup point in Prinetti API
+
 In the original Prinetti API SmartPOST product code (2106) was used, along with using the pickup points address as receiver, to direct a packet to a parcel locker of choice. With Pakettikauppa.fi implementation this method is obsolete and would only work when the parcel was shipped with Posti. To accommodate multiple parcel service providers a new AdditionalService.ServiceCode (2106) is added to mark a parcel going to alternate pickup point, with the pickup point id as AdditionalService.Specifier.
 
 If you have implemented a pickup point search API directly with a packet service provider supported by Pakettikauppa.fi (Matkahuolto for example) you can use the point id fetched via your implementation. With the pickup point API Pakettikauppa.fi functions only as a technical wrapper to different parcel service provider between you and the service provider. 
 
 Additional Service example
-	<Consignment.AdditionalService>
-	    <AdditionalService.ServiceCode>2106</AdditionalService.ServiceCode>
-	    <AdditionalService.Specifier name="pickup_point_id">5410</AdditionalService.Specifier>
-	</Consignment.AdditionalService>
+```xml
+<Consignment.AdditionalService>
+    <AdditionalService.ServiceCode>2106</AdditionalService.ServiceCode>
+    <AdditionalService.Specifier name="pickup_point_id">5410</AdditionalService.Specifier>
+</Consignment.AdditionalService>
+```
 
 ## Get info about a single pickup point 
 ### Request
+
 POST: /pickup-point/info
+
 |Param name	|Type	|Required	|Content|
 |---	|---	|---	|---	|
 |api_key	|UUID|	x|	|	|
@@ -761,7 +769,7 @@ Response
 POST: /shipment/status
 
 |Param name	|Type	|Required|
-|---	|---	|---	|---	|
+|---	|---	|---	|
 |api_key	|UUID	|x	|
 |tracking_code	|AN 100	|x	|
 |timestamp	|UNIX TIME	|x	|
@@ -803,20 +811,21 @@ Example:
 
 Status codes are most part same as described in implementation guide of IFTSTA transport status documentation by Posti.
 
-Status Code	Message FI	Message EN
-13	Lähetys on noudettu lähettäjältä	Item is collected from sender - picked up
-20	Lähetylle on tehty poikkeama	Exception
-22	Lähetys on luovutettu vastaanottajalle	Item has been handed over to the recipient
-31	Lähetys on kuljetuksessa	Item is in transport
-38	Lähetykseen liittyvä postiennakkomaksu on suoritettu	C.O.D payment is paid to the sender
-45	Lähetyksestä on lähetetty saapumisilmoitus 	Informed consignee of arrival
-48	Lähetys on lastattu runkokuljetukseen	Item is loaded onto a means of transport
-56	Lähetystä ei ole toimitettu – luovutusyritys on tehty	Item not delivered – delivery attempt made
-68	Lähetyksen EDI-tiedot vastaanotettu lähettäjältä	Pre-information is received from sender
-71	Lähetys on lastattu jakelukuljetukseen	Item is ready for delivery transportation
-77	Lähetys palautuu lähettäjälle	Item is returning to the sender
-91	Lähetys on saapunut postitoimipaikkaan	Item is arrived to a post office
-99	Lähetys lähdössä ulkomaille	Outbound
+|Status Code    |Message FI     |Message EN|
+|---|---|---|
+|13     |Lähetys on noudettu lähettäjältä       |Item is collected from sender - picked up|
+|20     |Lähetylle on tehty poikkeama   |Exception|
+|22     |Lähetys on luovutettu vastaanottajalle |Item has been handed over to the recipient|
+|31     |Lähetys on kuljetuksessa       |Item is in transport|
+|38     |Lähetykseen liittyvä postiennakkomaksu on suoritettu   |C.O.D payment is paid to the sender|
+|45     |Lähetyksestä on lähetetty saapumisilmoitus     |Informed consignee of arrival|
+|48     |Lähetys on lastattu runkokuljetukseen  |Item is loaded onto a means of transport|
+|56     |Lähetystä ei ole toimitettu – luovutusyritys on tehty  |Item not delivered – delivery attempt made|
+|68     |Lähetyksen EDI-tiedot vastaanotettu lähettäjältä       |Pre-information is received from sender|
+|71     |Lähetys on lastattu jakelukuljetukseen |Item is ready for delivery transportation|
+|77     |Lähetys palautuu lähettäjälle  |Item is returning to the sender|
+|91     |Lähetys on saapunut postitoimipaikkaan |Item is arrived to a post office|
+|99     |Lähetys lähdössä ulkomaille    |Outbound|
 
 ## Cancel shipment
 
@@ -826,11 +835,12 @@ Cancels the shipment. Also refunds customers if it's possible. Only shipments th
 
 POST: /shipment/cancel
 
-Param name	Type	Required	Content
-api_key	UUID	x	
-shipment_id	UUID	x	Original shipments UUID (as in response.reference@uuid)
-timestamp	UNIX TIME	x	
-hash	AN 64	x	
+|Param name     |Type   |Required       |Content|
+|---|---|---|---|
+|api_key        |UUID   |x      ||
+|shipment_id    |UUID   |x      |Original shipments UUID (as in response.reference@uuid)|
+|timestamp      |UNIX TIME      |x      ||
+|hash   |AN 64  |x      ||
 
 ### Cancel shipment 
 
@@ -870,15 +880,18 @@ Callback service is used to push notifications from the tracking data back to cl
 
 POST: callback url
 
-Param name	Type	Required	Details
-api_key	UUID	x	
-tracking_code	AN 100	x	
-timestamp	UNIX TIME	x	
-event	N	x	See "Shipment status codes"
+|Param name     |Type   |Required       |Details|
+|---|---|---|---|
+|api_key        |UUID   |x      ||
+|tracking_code  |AN 100 |x      ||
+|timestamp      |UNIX TIME      |x      ||
+|event  |N      |x      |See "Shipment status codes"|
+||
+|object |JSON   |x      |JSON presentation of the event. Object is same which is returned from shipment/status API.|
+|hash   |AN 64  |x      ||
 
-object	JSON	x	JSON presentation of the event. Object is same which is returned from shipment/status API.
-hash	AN 64	x	
 Hash calculation example 
+
 ```php
 $post_params = [
     'api_key' => $api_key,
