@@ -992,7 +992,7 @@ POST: /prinetti/create-shipment
 |contentline.description        |1      |Description of the content     |String |M|
 |contentline.quantity   |1      |Quantity of the content        |Numeric        |M|
 |contentline.currency   |1      |3 letter currency code, EUR    |String |M|
-|contentline.netweight  |1      |Netwieght in grams     |Numeric        |M|
+|contentline.netweight  |1      |Netweight in grams     |Numeric        |M|
 |contentline.value      |1      |Value of the content in currency. Decimal point is "." |Decimal        |M|
 |contentline.countryoforigin    |1      |2 letter country code, FI      |String |M|
 |contentline.tariffcode |1      |Customs tariff -code, required for non-EU shipments    |Numeric        |O / M|
