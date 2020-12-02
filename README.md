@@ -23,6 +23,7 @@ Implementation documentation for the Pakettikauppa logistics service
 |3.5.2019|Added information how to add return shipment for DB Schenker while creating origin shipment.|
 |12.11.2019|Removed note about how to search pickup points using provider names.|
 |25.2.2020|Moved API documentation to markdown format|
+|2020-12-02|Initial freight example|
 
 # Table of contents
 
@@ -67,6 +68,7 @@ Implementation documentation for the Pakettikauppa logistics service
 - [Prinetti API](#prinetti-api)
   * [Create Shipment](#create-shipment)
     + [Minimal XML example](#minimal-xml-example)
+    + [Cargo XML example](#cargo-example)
     + [Full example with additional services](#full-example-with-additional-services)
     + [Request](#request-7)
   * [Response](#response-7)
@@ -1063,6 +1065,79 @@ A single packet, no additional services.
     </Shipment>
 </eChannel>
 ```
+
+### Cargo example
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<eChannel>
+    <ROUTING>
+	<Routing.Account>00000000-0000-0000-0000-000000000000</Routing.Account>
+	<Routing.Key>1234567890ABCDEF</Routing.Key>
+	<Routing.Id>1464524676</Routing.Id>
+	<Routing.Name>puitajamuttereita.fi</Routing.Name>
+	<Routing.Time>20160529152436</Routing.Time>
+    </ROUTING>
+    <Shipment>
+	<Shipment.Sender>
+	    <Sender.Name1>Sender name</Sender.Name1>
+	    <Sender.Addr1>Some address</Sender.Addr1>
+	    <Sender.Postcode>33100</Sender.Postcode>
+	    <Sender.City>Tampere</Sender.City>
+	    <Sender.Country>FI</Sender.Country>
+	    <Sender.Vatcode>1234567-8</Sender.Vatcode>
+	</Shipment.Sender>
+	<Shipment.Recipient>
+	    <Recipient.Name1>Receiver name</Recipient.Name1>
+	    <Recipient.Addr1>Some address</Recipient.Addr1>
+	    <Recipient.Postcode>33100</Recipient.Postcode>
+	    <Recipient.City>Tampere</Recipient.City>
+	    <Recipient.Country>FI</Recipient.Country>
+	    <Recipient.Phone>123456789</Recipient.Phone>
+	    <Recipient.Email>someone@example.com</Recipient.Email>
+	</Shipment.Recipient>
+	<Shipment.Consignment>
+	    <Consignment.Reference>123456879</Consignment.Reference>
+	    <Consignment.Product>2103</Consignment.Product>
+
+<Consigment.Parcel type="normal">
+  <Parcel.Reference>1234567</Parcel.Reference>
+  <Parcel.Packagetype>PC</Parcel.Packagetype>
+  <Parcel.Weight unit="kg">2</Parcel.Weight>
+  <Parcel.Size>
+    <Size.Width>0.5</Size.Width>
+    <Size.Length>0.6</Size.Length>
+    <Size.Height>1.2</Size.Height>
+  </Parcel.Size>
+  <Parcel.Infocode>1012</Parcel.Infocode>
+  <Parcel.Contents>Muttereita ja puita</Parcel.Contents>
+  <Parcel.ReturnService>123</Parcel.ReturnService>
+  <Parcel.contentline>
+    <contentline.description>Muttereita</contentline.description>
+    <contentline.quantity>1</contentline.quantity>
+    <contentline.currency>EUR</contentline.currency>
+    <contentline.netweight>1</contentline.netweight>
+    <contentline.value>100</contentline.value>
+    <contentline.countryoforigin>FI</contentline.countryoforigin>
+    <contentline.tariffcode>9608101000</contentline.tariffcode>
+    <contentline.AdditionalService>
+      <AdditionalService.ServiceCode>9801</AdditionalService.ServiceCode>
+      <AdditionalService.Specifier name="Type">VAK</AdditionalService.Specifier>
+      <AdditionalService.Specifier name="PrimaryHazardClass">6.1</AdditionalService.Specifier>
+      <AdditionalService.Specifier name="SecondaryHazardClass">3</AdditionalService.Specifier>
+      <AdditionalService.Specifier name="UnNumber">2913</AdditionalService.Specifier>
+      <AdditionalService.Specifier name="DeclarantName">Pertti Keinonen</AdditionalService.Specifier>
+      <AdditionalService.Specifier name="ShippingName">PALAVA NESTE, N.O.S. (ETANOLI)</AdditionalService.Specifier>
+      <AdditionalService.Specifier name="Volume">20</AdditionalService.Specifier>
+      <AdditionalService.Specifier name="DocumentType">ROAD</AdditionalService.Specifier>
+      <AdditionalService.Specifier name="AdditionalInfo">Lis&#xE4;&#xE4; tietoa</AdditionalService.Specifier>
+    </contentline.AdditionalService>
+  </Parcel.contentline>
+</Consigment.Parcel>
+</Shipment.Consignment>
+    </Shipment>
+</eChannel>
+```
+
 
 ### Full example with additional services
 
