@@ -1097,7 +1097,7 @@ A single packet, no additional services.
 	</Shipment.Recipient>
 	<Shipment.Consignment>
 	    <Consignment.Reference>123456879</Consignment.Reference>
-	    <Consignment.Product>2103</Consignment.Product>
+	    <Consignment.Product>2004</Consignment.Product>
 
 <Consigment.Parcel type="normal">
   <Parcel.Reference>1234567</Parcel.Reference>
