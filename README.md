@@ -1122,7 +1122,7 @@ A single packet, no additional services.
     <contentline.countryoforigin>FI</contentline.countryoforigin>
     <contentline.tariffcode>9608101000</contentline.tariffcode>
     <contentline.AdditionalService>
-      <AdditionalService.ServiceCode>9910</AdditionalService.ServiceCode>
+      <AdditionalService.ServiceCode>5503</AdditionalService.ServiceCode>
       <AdditionalService.Specifier name="RegulationsCode">ADR</AdditionalService.Specifier>
       <AdditionalService.Specifier name="UnNo">0016</AdditionalService.Specifier>
       <AdditionalService.Specifier name="MainDanger">6.1</AdditionalService.Specifier>
