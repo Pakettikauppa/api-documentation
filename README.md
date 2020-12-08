@@ -24,6 +24,8 @@ Implementation documentation for the Pakettikauppa logistics service
 |12.11.2019|Removed note about how to search pickup points using provider names.|
 |25.2.2020|Moved API documentation to markdown format|
 |2020-12-02|Initial freight example|
+|2020-12-08|Freight xml example update|
+
 
 # Table of contents
 
