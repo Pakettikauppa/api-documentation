@@ -1120,16 +1120,13 @@ A single packet, no additional services.
     <contentline.countryoforigin>FI</contentline.countryoforigin>
     <contentline.tariffcode>9608101000</contentline.tariffcode>
     <contentline.AdditionalService>
-      <AdditionalService.ServiceCode>9801</AdditionalService.ServiceCode>
-      <AdditionalService.Specifier name="Type">VAK</AdditionalService.Specifier>
-      <AdditionalService.Specifier name="PrimaryHazardClass">6.1</AdditionalService.Specifier>
-      <AdditionalService.Specifier name="SecondaryHazardClass">3</AdditionalService.Specifier>
-      <AdditionalService.Specifier name="UnNumber">2913</AdditionalService.Specifier>
-      <AdditionalService.Specifier name="DeclarantName">Pertti Keinonen</AdditionalService.Specifier>
-      <AdditionalService.Specifier name="ShippingName">PALAVA NESTE, N.O.S. (ETANOLI)</AdditionalService.Specifier>
-      <AdditionalService.Specifier name="Volume">20</AdditionalService.Specifier>
-      <AdditionalService.Specifier name="DocumentType">ROAD</AdditionalService.Specifier>
-      <AdditionalService.Specifier name="AdditionalInfo">Lis&#xE4;&#xE4; tietoa</AdditionalService.Specifier>
+      <AdditionalService.ServiceCode>9910</AdditionalService.ServiceCode>
+      <AdditionalService.Specifier name="RegulationsCode">ADR</AdditionalService.Specifier>
+      <AdditionalService.Specifier name="UnNo">0016</AdditionalService.Specifier>
+      <AdditionalService.Specifier name="MainDanger">6.1</AdditionalService.Specifier>
+      <AdditionalService.Specifier name="TotalQuantity">6.1</AdditionalService.Specifier>
+      <AdditionalService.Specifier name="TotalQuantityUnit">LTR</AdditionalService.Specifier>
+      <AdditionalService.Specifier name="ProperShippingName">PALAVA NESTE, N.O.S. (ETANOLI)</AdditionalService.Specifier>
     </contentline.AdditionalService>
   </Parcel.contentline>
 </Consigment.Parcel>
