@@ -954,6 +954,7 @@ POST: /prinetti/create-shipment
 |Routing.Key    |1      |Shared secret  |String ||
 |Routing.Id     |1      |Unique id of the request       |Numeric        ||
 |Routing.Time   |1      |Timestamp of the request, in format YYYYMMDDHHMMSS     |Timestamp      ||
+|Routing.System |1      |Sending system specification  |String |O|
 |Shipment       |1      |       |       ||
 |Shipment.Sender        |1      |Information about the Sender   |       ||
 |Sender.Name1   |1      |Name of the Sender     |String ||
