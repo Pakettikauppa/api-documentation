@@ -1032,6 +1032,7 @@ A single packet, no additional services.
 	<Routing.Id>1464524676</Routing.Id>
 	<Routing.Name>puitajamuttereita.fi</Routing.Name>
 	<Routing.Time>20160529152436</Routing.Time>
+	<Routing.System>EXAMPLE</Routing.System>
     </ROUTING>
     <Shipment>
 	<Shipment.Sender>
@@ -1084,6 +1085,7 @@ Multipacket shipment via Matkahuolto, cash on delivery. Has multiple elements fr
 	<Routing.Version>1</Routing.Version><!-- Ignored -->
 	<Routing.Mode>0</Routing.Mode><!-- Ignored -->
 	<Routing.Comment>Comment</Routing.Comment><!-- Ignored -->
+	<Routing.System>EXAMPLE</Routing.System>
     </ROUTING>
 
     <Shipment>
@@ -1263,6 +1265,7 @@ XML example:
 	<Routing.Id>1479035179</Routing.Id>
 	<Routing.Name>Testisanoma</Routing.Name>
 	<Routing.Time>20161113130618</Routing.Time>
+	<Routing.System>EXAMPLE</Routing.System>
 </ROUTING>
     <PrintLabel responseFormat="File"><!-- "File" and "inline" are supported. "File" is default -->
 	<Reference>1479034267</Reference>
