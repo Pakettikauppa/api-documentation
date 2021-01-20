@@ -1263,7 +1263,7 @@ XML example:
 	<Routing.Name>Testisanoma</Routing.Name>
 	<Routing.Time>20161113130618</Routing.Time>
 </ROUTING>
-    <PrintLabel responseFormat="File"><!-- "File" and "inline" are supported. "File" is default -->
+    <PrintLabel combine="true" responseFormat="File"><!-- "File" and "inline" are supported. "File" is default -->
 	<Reference>1479034267</Reference>
 	<TrackingCode>JJFI64574900000202361</TrackingCode>
     </PrintLabel>
