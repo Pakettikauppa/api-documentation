@@ -1114,7 +1114,6 @@ A single packet, no additional services.
 		  </Parcel.Size>
 		  <Parcel.Infocode>1012</Parcel.Infocode>
 		  <Parcel.Contents>Muttereita ja puita</Parcel.Contents>
-		  <Parcel.ReturnService>123</Parcel.ReturnService>
 		  <Parcel.contentline>
 		<!-- information needed only for customs. Optional in cargo.
 		    <contentline.description>Muttereita</contentline.description>
@@ -1301,13 +1300,12 @@ This is recently updated version. Please contact Pakettikauppa if error occurs.<
             <Parcel.Packagetype>PC</Parcel.Packagetype>
             <Parcel.Weight unit="kg">2</Parcel.Weight>
             <Parcel.Infocode>1012</Parcel.Infocode>
-            <Parcel.Contents>Muttereita ja puita</Parcel.Contents>
             <Parcel.Size>
                 <Size.Width>0.15</Size.Width>
                 <Size.Length>0.34</Size.Length>
                 <Size.Height>0.56</Size.Height>
             </Parcel.Size>
-            <Parcel.Contents>PARCEL 2 contents</Parcel.Contents>
+	    <Parcel.Contents>Parcel 2 contents</Parcel.Contents>
             <Parcel.contentline>
                 <contentline.additionalservice>
                     <!-- no stacking -->
