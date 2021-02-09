@@ -25,6 +25,8 @@ Implementation documentation for the Pakettikauppa logistics service
 |25.2.2020|Moved API documentation to markdown format|
 |2020-12-02|Initial freight example|
 |2020-12-08|Freight xml example update|
+|2021-02-09|Freight xml example update: new example with some additional services|
+
 
 
 # Table of contents
@@ -71,7 +73,8 @@ Implementation documentation for the Pakettikauppa logistics service
   * [Create Shipment](#create-shipment)
     + [Minimal XML example](#minimal-xml-example)
     + [Cargo XML example](#cargo-example)
-    + [Full example with additional services](#full-example-with-additional-services)
+    + [Cargo example with some additional information and full vak example](#cargo-example-with-some-additional-information-and-full-vak-example)
+    + [Regular parcel full example with additional services](#regular-parcel-full-example-with-additional-services)
     + [Request](#request-7)
   * [Response](#response-7)
     + [Response](#response-8)
@@ -1100,45 +1103,224 @@ A single packet, no additional services.
 	<Shipment.Consignment>
 	    <Consignment.Reference>123456879</Consignment.Reference>
 	    <Consignment.Product>2004</Consignment.Product>
-
-<Consigment.Parcel type="normal">
-  <Parcel.Reference>1234567</Parcel.Reference>
-  <Parcel.Packagetype>PC</Parcel.Packagetype>
-  <Parcel.Weight unit="kg">2</Parcel.Weight>
-  <Parcel.Size>
-    <Size.Width>0.5</Size.Width>
-    <Size.Length>0.6</Size.Length>
-    <Size.Height>1.2</Size.Height>
-  </Parcel.Size>
-  <Parcel.Infocode>1012</Parcel.Infocode>
-  <Parcel.Contents>Muttereita ja puita</Parcel.Contents>
-  <Parcel.ReturnService>123</Parcel.ReturnService>
-  <Parcel.contentline>
-    <contentline.description>Muttereita</contentline.description>
-    <contentline.quantity>1</contentline.quantity>
-    <contentline.currency>EUR</contentline.currency>
-    <contentline.netweight>1</contentline.netweight>
-    <contentline.value>100</contentline.value>
-    <contentline.countryoforigin>FI</contentline.countryoforigin>
-    <contentline.tariffcode>9608101000</contentline.tariffcode>
-    <contentline.AdditionalService>
-      <AdditionalService.ServiceCode>5503</AdditionalService.ServiceCode>
-      <AdditionalService.Specifier name="RegulationsCode">ADR</AdditionalService.Specifier>
-      <AdditionalService.Specifier name="UnNo">0016</AdditionalService.Specifier>
-      <AdditionalService.Specifier name="MainDanger">6.1</AdditionalService.Specifier>
-      <AdditionalService.Specifier name="TotalQuantity">6.1</AdditionalService.Specifier>
-      <AdditionalService.Specifier name="TotalQuantityUnit">LTR</AdditionalService.Specifier>
-      <AdditionalService.Specifier name="ProperShippingName">PALAVA NESTE, N.O.S. (ETANOLI)</AdditionalService.Specifier>
-    </contentline.AdditionalService>
-  </Parcel.contentline>
-</Consigment.Parcel>
-</Shipment.Consignment>
-    </Shipment>
+	    <Consigment.Parcel type="normal">
+		  <Parcel.Reference>1234567</Parcel.Reference>
+		  <Parcel.Packagetype>PC</Parcel.Packagetype>
+		  <Parcel.Weight unit="kg">2</Parcel.Weight>
+		  <Parcel.Size>
+		    <Size.Width>0.5</Size.Width>
+		    <Size.Length>0.6</Size.Length>
+		    <Size.Height>1.2</Size.Height>
+		  </Parcel.Size>
+		  <Parcel.Infocode>1012</Parcel.Infocode>
+		  <Parcel.Contents>Muttereita ja puita</Parcel.Contents>
+		  <Parcel.ReturnService>123</Parcel.ReturnService>
+		  <Parcel.contentline>
+		<!-- information needed only for customs. Optional in cargo.
+		    <contentline.description>Muttereita</contentline.description>
+		    <contentline.quantity>1</contentline.quantity>
+		    <contentline.currency>EUR</contentline.currency>
+		    <contentline.netweight>1</contentline.netweight>
+		    <contentline.value>100</contentline.value>
+		    <contentline.countryoforigin>FI</contentline.countryoforigin>
+		    <contentline.tariffcode>9608101000</contentline.tariffcode> -->
+		    <contentline.AdditionalService>
+		      <AdditionalService.ServiceCode>5503</AdditionalService.ServiceCode>
+		      <AdditionalService.Specifier name="RegulationsCode">ADR</AdditionalService.Specifier>
+		      <AdditionalService.Specifier name="UnNo">0016</AdditionalService.Specifier>
+		      <AdditionalService.Specifier name="MainDanger">6.1</AdditionalService.Specifier>
+		      <AdditionalService.Specifier name="TotalQuantity">6.1</AdditionalService.Specifier>
+		      <AdditionalService.Specifier name="TotalQuantityUnit">LTR</AdditionalService.Specifier>
+		      <AdditionalService.Specifier name="ProperShippingName">PALAVA NESTE, N.O.S. (ETANOLI)</AdditionalService.Specifier>
+		    </contentline.AdditionalService>
+  		</Parcel.contentline>
+	</Consigment.Parcel>
+	</Shipment.Consignment>
+  </Shipment>
 </eChannel>
 ```
 
+### Cargo example with some additional information and full vak example
+Optional delivery party can be sent using service code 9909.<br>
+Optional pickup party can be sent using service code 9910.<br>
+Pickup date for cargo 9905<br>
+Delivery date 9906.<br>
+No stacking in contentline.additionalservice with seervice code 9907.<br>
+Note that these 99## codes are used only for cargo by default (excluding 9902 and 9901).<br>
+This is recently updated version. Please contact Pakettikauppa if error occurs.<br>
 
-### Full example with additional services
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<eChannel>
+<ROUTING>
+    <ROUTING>
+        <Routing.Account>00000000-0000-0000-0000-000000000000</Routing.Account>
+        <Routing.Key>1234567890ABCDEF</Routing.Key>
+        <Routing.Id>1464524676</Routing.Id>
+        <Routing.Name>puitajamuttereita.fi</Routing.Name>
+        <Routing.Time>20160529152436</Routing.Time>
+    </ROUTING>
+</ROUTING>
+<Shipment>
+    <Shipment.Sender>
+        <Sender.Name1>Sender name</Sender.Name1>
+        <Sender.Addr1>Some address</Sender.Addr1>
+        <Sender.Postcode>33100</Sender.Postcode>
+        <Sender.City>Tampere</Sender.City>
+        <Sender.Country>FI</Sender.Country>
+        <Sender.Vatcode>1234567-8</Sender.Vatcode>
+    </Shipment.Sender>
+    <Shipment.Recipient>
+        <Recipient.Name1>Receiver name</Recipient.Name1>
+        <Recipient.Addr1>Some address</Recipient.Addr1>
+        <Recipient.Postcode>33100</Recipient.Postcode>
+        <Recipient.City>Tampere</Recipient.City>
+        <Recipient.Country>FI</Recipient.Country>
+        <Recipient.Phone>123456789</Recipient.Phone>
+        <Recipient.Email>someone@example.com</Recipient.Email>
+    </Shipment.Recipient>
+    <Shipment.Consignment>
+        <Consignment.Reference>123456879</Consignment.Reference>
+        <Consignment.Product>2004</Consignment.Product>
+        <Consignment.Invoicenumber/>
+        <Consignment.Merchandisevalue/>
+        <Consignment.AdditionalService>
+            <!-- VAK-stuff in shipment -->
+            <AdditionalService.ServiceCode>5503</AdditionalService.ServiceCode>
+        </Consignment.AdditionalService>
+        <Consignment.AdditionalService>
+            <!-- payer other than sender -->
+            <AdditionalService.ServiceCode>3103</AdditionalService.ServiceCode>
+            <AdditionalService.Specifier name="account">123456</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="account_type">PAYER</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="name1">Name oY</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="addr1">Address 1</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="addr2"></AdditionalService.Specifier>
+            <AdditionalService.Specifier name="postcode">33100</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="city">TAMPERE</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="country">FI</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="contact_name">Martti Maksaja</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="contact_mobile">+3581431444</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="contact_phone">+358234432</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="contact_email">test@example.org</AdditionalService.Specifier>
+        </Consignment.AdditionalService>
+        <Consignment.AdditionalService>
+        <!-- OPTIONAL DELIVERY PARTY -->
+            <AdditionalService.ServiceCode>9909</AdditionalService.ServiceCode>
+            <AdditionalService.Specifier name="account">123456</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="account_type">DELIVERY</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="name1">Name oY</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="addr1">Address 1</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="addr2"></AdditionalService.Specifier>
+            <AdditionalService.Specifier name="postcode">33100</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="city">TAMPERE</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="country">FI</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="contact_name">Keijo Kuski</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="contact_mobile">+3581431444</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="contact_phone">+358234432</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="contact_email">test@example.org</AdditionalService.Specifier>
+        </Consignment.AdditionalService>
+        <Consignment.AdditionalService>
+            <!-- OPTIONAL PICKUP PARTY -->
+            <AdditionalService.ServiceCode>9910</AdditionalService.ServiceCode>
+            <AdditionalService.Specifier name="account">123456</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="account_type">PICKUP</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="name1">Name oY</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="addr1">Address 1</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="addr2"></AdditionalService.Specifier>
+            <AdditionalService.Specifier name="postcode">33100</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="city">TAMPERE</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="country">FI</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="phone">+358123123</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="email">test@example.org</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="contact_name">Nestori Noutaja</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="contact_mobile">+3581431444</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="contact_phone">+358234432</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="contact_email">test@example.org</AdditionalService.Specifier>
+        </Consignment.AdditionalService>
+        <Consignment.AdditionalService>
+            <!-- PICKUP DATE FOR CARGO -->
+            <!--timeEarliest and timeLatest ISO 8601 -->
+            <AdditionalService.ServiceCode>9905</AdditionalService.ServiceCode>
+            <AdditionalService.Specifier name="pickup_date">2021-01-17</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="timeEarliest">10:00:00+03:00</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="timeLatest">16:00:00+03:00</AdditionalService.Specifier>
+        </Consignment.AdditionalService>
+        <Consignment.AdditionalService>
+            <!-- DELIVERY DATE -->
+            <!--timeEarliest and timeLatest ISO 8601 -->
+            <AdditionalService.ServiceCode>9906</AdditionalService.ServiceCode>
+            <AdditionalService.Specifier name="delivery_date">2021-01-17</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="timeEarliest">10:00:00+03:00</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="timeLatest">16:00:00+03:00</AdditionalService.Specifier>
+        </Consignment.AdditionalService>
+        <Consignment.AdditionalService>
+            <AdditionalService.ServiceCode>9908</AdditionalService.ServiceCode>
+            <AdditionalService.Specifier name="instruction">"Kuljetusohjeet" on domestic waybill</AdditionalService.Specifier>
+            <AdditionalService.Specifier name="instruction_type">GENERAL</AdditionalService.Specifier>
+        </Consignment.AdditionalService>
+        <Consignment.AdditionalInfo>
+            <AdditionalInfo.Text>Kermakakku ja kolme kiveä</AdditionalInfo.Text>
+        </Consignment.AdditionalInfo>
+        <Consigment.Parcel type="normal">
+            <Parcel.Reference>1234567</Parcel.Reference>
+            <Parcel.Packagetype>ZPF</Parcel.Packagetype>
+            <Parcel.Weight unit="kg">2</Parcel.Weight>
+            <Parcel.Infocode>6666</Parcel.Infocode>
+            <Parcel.Size>
+                <Size.Width>0.15</Size.Width>
+                <Size.Length>0.34</Size.Length>
+                <Size.Height>0.56</Size.Height>
+            </Parcel.Size>
+            <Parcel.Contents>Parcel 1 contents</Parcel.Contents>
+            <Parcel.contentline>
+                <contentline.additionalservice>
+                    <AdditionalService.ServiceCode>5503</AdditionalService.ServiceCode>
+                    <AdditionalService.Specifier name="RegulationsCode">ADR</AdditionalService.Specifier>
+                    <AdditionalService.Specifier name="UnNo">0016</AdditionalService.Specifier>
+                    <AdditionalService.Specifier name="MainDanger">6.1</AdditionalService.Specifier>
+                    <AdditionalService.Specifier name="TotalQuantity">6.1</AdditionalService.Specifier>
+                    <AdditionalService.Specifier name="TotalQuantityUnit">LTR</AdditionalService.Specifier>
+                    <AdditionalService.Specifier name="ProperShippingName">PALAVA NESTE, N.O.S. (ETANOLI)</AdditionalService.Specifier>
+                    <AdditionalService.Specifier name="TechnicalDescription">(ADR 3.1.2)</AdditionalService.Specifier>
+                    <AdditionalService.Specifier name="SubsidiaryRisk">4.2</AdditionalService.Specifier>
+                    <AdditionalService.Specifier name="PackingGroup">III</AdditionalService.Specifier>
+                    <AdditionalService.Specifier name="TunnelCode">C500D</AdditionalService.Specifier>
+                    <!-- DO NOT USE LimitedQuantity IF REQULAR LQ! THIS IS ONLY USED WITH FULL VAK-INFO -->
+                    <AdditionalService.Specifier name="LimitedQuantity">true</AdditionalService.Specifier>
+                    <AdditionalService.Specifier name="MarinePollutant">true</AdditionalService.Specifier>
+                </contentline.additionalservice>
+                <contentline.additionalservice>
+                    <!-- no stacking -->
+                    <AdditionalService.ServiceCode>9907</AdditionalService.ServiceCode>
+                </contentline.additionalservice>
+            </Parcel.contentline>
+        </Consigment.Parcel>
+        <Consigment.Parcel type="normal">
+            <Parcel.Reference>1234567</Parcel.Reference>
+            <Parcel.Packagetype>PC</Parcel.Packagetype>
+            <Parcel.Weight unit="kg">2</Parcel.Weight>
+            <Parcel.Infocode>1012</Parcel.Infocode>
+            <Parcel.Contents>Muttereita ja puita</Parcel.Contents>
+            <Parcel.Size>
+                <Size.Width>0.15</Size.Width>
+                <Size.Length>0.34</Size.Length>
+                <Size.Height>0.56</Size.Height>
+            </Parcel.Size>
+            <Parcel.Contents>PARCEL 2 contents</Parcel.Contents>
+            <Parcel.contentline>
+                <contentline.additionalservice>
+                    <!-- no stacking -->
+                    <AdditionalService.ServiceCode>9907</AdditionalService.ServiceCode>
+                </contentline.additionalservice>
+            </Parcel.contentline>
+        </Consigment.Parcel>
+    </Shipment.Consignment>
+</Shipment>
+</eChannel>
+```
+
+### Regular parcel full example with additional services
 
 Multipacket shipment via Matkahuolto, cash on delivery. Has multiple elements from the original Prinetti API that are not used with Pakettikauppa.fi implementation.
 
@@ -1158,7 +1340,6 @@ Multipacket shipment via Matkahuolto, cash on delivery. Has multiple elements fr
 	<Routing.Mode>0</Routing.Mode><!-- Ignored -->
 	<Routing.Comment>Comment</Routing.Comment><!-- Ignored -->
     </ROUTING>
-
     <Shipment>
 	<Shipment.Sender>
 	    <Sender.Contractid>123456</Sender.Contractid><!-- Ignored -->
@@ -1173,7 +1354,6 @@ Multipacket shipment via Matkahuolto, cash on delivery. Has multiple elements fr
 	    <Sender.Phone></Sender.Phone>
 	    <Sender.Vatcode></Sender.Vatcode>
 	</Shipment.Sender>
-
 	<Shipment.Recipient>
 	    <Recipient.Code></Recipient.Code><!-- Ignored -->
 	    <Recipient.Name1>John Doe</Recipient.Name1>
@@ -1188,7 +1368,6 @@ Multipacket shipment via Matkahuolto, cash on delivery. Has multiple elements fr
 	    <Recipient.Vatcode></Recipient.Vatcode>
 	    <Recipient.Email>john@doe.com</Recipient.Email>
 	</Shipment.Recipient>
-
 	<Shipment.Consignment>
 	    <Consignment.Reference>3211479032410</Consignment.Reference>
 	    <Consignment.Product>90010</Consignment.Product>
@@ -1196,7 +1375,6 @@ Multipacket shipment via Matkahuolto, cash on delivery. Has multiple elements fr
 	    <Consignment.ReturnInstruction>E</Consignment.ReturnInstruction>
 	    <Consignment.Invoicenumber/>
 	    <Consignment.Merchandisevalue>100</Consignment.Merchandisevalue>
-
 	    <Consignment.AdditionalService><!-- Cash on delivery, Postiennakko/Bussiennakko -->
 		<AdditionalService.ServiceCode>3101</AdditionalService.ServiceCode>
 		<AdditionalService.Specifier name="amount">150</AdditionalService.Specifier>
@@ -1204,17 +1382,14 @@ Multipacket shipment via Matkahuolto, cash on delivery. Has multiple elements fr
 		<AdditionalService.Specifier name="codbic">DABAFIHH</AdditionalService.Specifier>
 		<AdditionalService.Specifier name="reference">12344</AdditionalService.Specifier>
 	    </Consignment.AdditionalService>
-
-			<Consignment.AdditionalService>
-				<AdditionalService.ServiceCode>2106</AdditionalService.ServiceCode>
-				<AdditionalService.Specifier name="pickup_point_id">5410</AdditionalService.Specifier>
-			</Consignment.AdditionalService>
-
+		<Consignment.AdditionalService>
+			<AdditionalService.ServiceCode>2106</AdditionalService.ServiceCode>
+			<AdditionalService.Specifier name="pickup_point_id">5410</AdditionalService.Specifier>
+		</Consignment.AdditionalService>
 	    <Consignment.Currency>EUR</Consignment.Currency>
 	    <Consignment.AdditionalInfo>
 		<AdditionalInfo.Text>Puita ja muttereita</AdditionalInfo.Text>
 	    </Consignment.AdditionalInfo>
-
 	    <Consignment.Parcel type="normal">
 		<Parcel.Reference>123456</Parcel.Reference>
 		<Parcel.Packagetype>PC</Parcel.Packagetype>
@@ -1233,7 +1408,6 @@ Multipacket shipment via Matkahuolto, cash on delivery. Has multiple elements fr
 		    <contentline.tariffcode>9608101000</contentline.tariffcode>
 		</Parcel.contentline>
 	    </Consignment.Parcel>
-
 	    <Consignment.Parcel type="normal">
 		<Parcel.Reference>1234567</Parcel.Reference>
 		<Parcel.Packagetype>PC</Parcel.Packagetype>
@@ -1252,7 +1426,6 @@ Multipacket shipment via Matkahuolto, cash on delivery. Has multiple elements fr
 		    <contentline.tariffcode>9608101000</contentline.tariffcode>
 		</Parcel.contentline>
 	     </Consignment.Parcel>
-
 	 </Shipment.Consignment>
      </Shipment>
 </eChannel>
