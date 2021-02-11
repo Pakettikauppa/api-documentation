@@ -1230,8 +1230,6 @@ This is recently updated version. Please contact Pakettikauppa if error occurs.<
             <AdditionalService.Specifier name="postcode">33100</AdditionalService.Specifier>
             <AdditionalService.Specifier name="city">TAMPERE</AdditionalService.Specifier>
             <AdditionalService.Specifier name="country">FI</AdditionalService.Specifier>
-            <AdditionalService.Specifier name="phone">+358123123</AdditionalService.Specifier>
-            <AdditionalService.Specifier name="email">test@example.org</AdditionalService.Specifier>
             <AdditionalService.Specifier name="contact_name">Nestori Noutaja</AdditionalService.Specifier>
             <AdditionalService.Specifier name="contact_mobile">+3581431444</AdditionalService.Specifier>
             <AdditionalService.Specifier name="contact_phone">+358234432</AdditionalService.Specifier>
@@ -1263,7 +1261,7 @@ This is recently updated version. Please contact Pakettikauppa if error occurs.<
         </Consignment.AdditionalInfo>
         <Consigment.Parcel type="normal">
             <Parcel.Reference>1234567</Parcel.Reference>
-            <Parcel.Packagetype>ZPF</Parcel.Packagetype>
+            <Parcel.Packagetype>CW</Parcel.Packagetype>
             <Parcel.Weight unit="kg">2</Parcel.Weight>
             <Parcel.Infocode>6666</Parcel.Infocode>
             <Parcel.Size>
