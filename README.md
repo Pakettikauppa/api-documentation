@@ -1144,7 +1144,7 @@ Optional delivery party can be sent using service code 9909.<br>
 Optional pickup party can be sent using service code 9910.<br>
 Pickup date for cargo 9905<br>
 Delivery date 9906.<br>
-No stacking in contentline.additionalservice with seervice code 9907.<br>
+No stacking in Parcel.AdditionalDervice with seervice code 9907.<br>
 Note that these 99## codes are used only for cargo by default (excluding 9902 and 9901).<br>
 This is recently updated version. Please contact Pakettikauppa if error occurs.<br>
 
@@ -1287,11 +1287,11 @@ This is recently updated version. Please contact Pakettikauppa if error occurs.<
                     <AdditionalService.Specifier name="LimitedQuantity">true</AdditionalService.Specifier>
                     <AdditionalService.Specifier name="MarinePollutant">true</AdditionalService.Specifier>
                 </contentline.additionalservice>
-                <contentline.additionalservice>
-                    <!-- no stacking -->
-                    <AdditionalService.ServiceCode>9907</AdditionalService.ServiceCode>
-                </contentline.additionalservice>
             </Parcel.contentline>
+            <Parcel.AdditionalService>
+                <!-- no stacking -->
+                <AdditionalService.ServiceCode>9907</AdditionalService.ServiceCode>
+            </Parcel.AdditionalService>
         </Consigment.Parcel>
         <Consigment.Parcel type="normal">
             <Parcel.Reference>1234567</Parcel.Reference>
