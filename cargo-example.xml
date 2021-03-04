@@ -143,16 +143,16 @@
                 <AdditionalService.Specifier name="TechnicalDescription">(ADR 3.1.2)</AdditionalService.Specifier>
                 <AdditionalService.Specifier name="SubsidiaryRisk">4.2</AdditionalService.Specifier>
                 <AdditionalService.Specifier name="PackingGroup">III</AdditionalService.Specifier>
+                <AdditionalService.Specifier name="PackingDescription">PLop</AdditionalService.Specifier>
                 <AdditionalService.Specifier name="TunnelCode">C500D</AdditionalService.Specifier>
-                <!-- DO NOT USE THIS IF REQULAR LQ! THIS IS ONLY USED WITH FULL VAK-INFO -->
                 <AdditionalService.Specifier name="LimitedQuantity">true</AdditionalService.Specifier>
                 <AdditionalService.Specifier name="MarinePollutant">true</AdditionalService.Specifier>
             </contentline.additionalservice>
-            <!-- no stacking -->
-            <!--><contentline.additionalservice>
-                 <AdditionalService.ServiceCode>9907</AdditionalService.ServiceCode>
-             </contentline.additionalservice>-->
         </Parcel.contentline>
+            <!-- no stacking -->
+        <Parcel.additionalservice>
+            <AdditionalService.ServiceCode>9907</AdditionalService.ServiceCode>
+        </Parcel.additionalservice>
     </Consigment.Parcel>
     <Consigment.Parcel type="normal">
         <Parcel.Reference>1234567</Parcel.Reference>

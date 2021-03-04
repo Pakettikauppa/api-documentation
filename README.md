@@ -1282,6 +1282,7 @@ This is recently updated version. Please contact Pakettikauppa if error occurs.<
                     <AdditionalService.Specifier name="TechnicalDescription">(ADR 3.1.2)</AdditionalService.Specifier>
                     <AdditionalService.Specifier name="SubsidiaryRisk">4.2</AdditionalService.Specifier>
                     <AdditionalService.Specifier name="PackingGroup">III</AdditionalService.Specifier>
+                    <AdditionalService.Specifier name="PackingDescription">Desc</AdditionalService.Specifier>
                     <AdditionalService.Specifier name="TunnelCode">C500D</AdditionalService.Specifier>
                     <!-- DO NOT USE LimitedQuantity IF REQULAR LQ! THIS IS ONLY USED WITH FULL VAK-INFO -->
                     <AdditionalService.Specifier name="LimitedQuantity">true</AdditionalService.Specifier>
